@@ -141,7 +141,7 @@ jobs:
     needs: build-and-push
     environment:
       name: production
-      url: ${{ secrets.APP_URL }}
+
 
     steps:
       - name: 📥 Checkout production branch (built files)
