@@ -1,33 +1,22 @@
-name: 🚀 Build & Deploy to Hostinger
+name: 🔨 Build & Push to production branch
 
 on:
-  workflow_dispatch:
-    inputs:
-      environment:
-        description: 'Deployment Environment'
-        required: true
-        default: 'production'
-        type: choice
-        options:
-          - production
+  workflow_dispatch:   # Manual trigger from GitHub Actions tab
 
   push:
     branches:
-      - main
+      - main           # Auto trigger on every push to main
 
 concurrency:
-  group: deploy-production
+  group: build-production
   cancel-in-progress: false
 
 jobs:
-  # ─────────────────────────────────────────────────────────
-  # JOB 1: Build frontend + Push to production branch
-  # ─────────────────────────────────────────────────────────
   build-and-push:
-    name: 🔨 Build & Push → production branch
+    name: 🔨 Build Frontend & Push → production branch
     runs-on: ubuntu-latest
     permissions:
-      contents: write   # Allow pushing to production branch
+      contents: write
 
     steps:
       - name: 📥 Checkout main branch
@@ -44,35 +33,37 @@ jobs:
           cache: 'npm'
           cache-dependency-path: frontend/package-lock.json
 
-      - name: 📦 Install frontend dependencies
+      - name: 📦 Install dependencies
         working-directory: frontend
         run: npm ci
 
-      - name: 🏗️ Build production frontend
+      - name: 🏗️ Build production bundle
         working-directory: frontend
         env:
-          VITE_API_URL: ${{ secrets.VITE_API_URL }}
           NODE_ENV: production
         run: npm run build
 
-      - name: 📋 Prepare deployment files (in /tmp)
+      - name: 📋 Prepare files in /tmp
         run: |
           mkdir -p /tmp/deploy/public_html
           mkdir -p /tmp/deploy/api
 
-          # ── Copy built frontend ──────────────────────────
+          # Frontend built files
           cp -r frontend/dist/. /tmp/deploy/public_html/
 
-          # ── Copy PHP backend ─────────────────────────────
+          # PHP backend files
           cp -r api/config      /tmp/deploy/api/
           cp -r api/controllers /tmp/deploy/api/
           cp -r api/core        /tmp/deploy/api/
           cp -r api/cron        /tmp/deploy/api/
           cp -r api/middleware  /tmp/deploy/api/
           cp -r api/public      /tmp/deploy/api/
+          cp -r database        /tmp/deploy/
+          cp -r scripts         /tmp/deploy/
+          cp    .env.example    /tmp/deploy/
 
-          # ── Create production .htaccess ──────────────────
-          cat > /tmp/deploy/public_html/.htaccess << 'HTACCESS'
+          # .htaccess for SPA routing
+          cat > /tmp/deploy/public_html/.htaccess << 'HTEOF'
           Options -Indexes
           <IfModule mod_rewrite.c>
               RewriteEngine On
@@ -83,159 +74,42 @@ jobs:
               RewriteCond %{REQUEST_FILENAME} !-d
               RewriteRule ^ index.html [L]
           </IfModule>
-          <IfModule mod_headers.c>
-              Header always set X-Content-Type-Options "nosniff"
-              Header always set X-Frame-Options "SAMEORIGIN"
-          </IfModule>
-          <FilesMatch "\.(js|css|png|jpg|jpeg|gif|ico|svg|woff|woff2|ttf|eot)$">
+          <FilesMatch "\.(js|css|png|jpg|jpeg|gif|ico|svg|woff|woff2)$">
               Header set Cache-Control "max-age=31536000, public, immutable"
           </FilesMatch>
-          HTACCESS
+          HTEOF
 
-          echo "=== Files ready in /tmp/deploy ==="
-          find /tmp/deploy -type f | head -50
+          echo "=== Build ready ==="
+          find /tmp/deploy -type f | head -60
 
-      - name: 🔀 Switch to production branch and commit
+      - name: 🔀 Commit & push to production branch
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
 
-          # Fetch and checkout production branch
           git fetch origin production
           git checkout production
 
-          # Remove old files (keep .git)
+          # Remove old files
           git rm -rf . --quiet 2>/dev/null || true
 
-          # Copy new deployment files from /tmp
+          # Copy new build
           cp -r /tmp/deploy/public_html ./public_html
           cp -r /tmp/deploy/api         ./api
+          cp -r /tmp/deploy/database    ./database
+          cp -r /tmp/deploy/scripts     ./scripts
+          cp    /tmp/deploy/.env.example ./.env.example
 
-          # Create README
-          cat > README.md << 'READMEEOF'
-          # TadbeerGo — Production Branch
-
-          This branch contains **auto-generated, production-ready** built files.
-
-          > ⚠️ **Do NOT edit this branch directly.**
-          > All source code changes must go to the `main` branch.
-
-          The `production` branch is automatically updated by GitHub Actions
-          whenever code is pushed to `main`.
-          READMEEOF
+          # README
+          echo "# TadbeerGo — Production Build" > README.md
+          echo "" >> README.md
+          echo "Auto-generated from \`main\` branch. Do NOT edit directly." >> README.md
+          echo "" >> README.md
+          echo "Built: $(date -u '+%Y-%m-%d %H:%M UTC')" >> README.md
+          echo "Commit: ${{ github.sha }}" >> README.md
 
           git add -A
-          git diff --cached --stat
-
-          COMMIT_MSG="deploy: Build from main@$(echo ${{ github.sha }} | cut -c1-7) ($(date -u '+%Y-%m-%d %H:%M UTC'))"
-          git commit -m "$COMMIT_MSG" || echo "Nothing new to commit, skipping."
+          git status
+          git commit -m "build: $(date -u '+%Y-%m-%d %H:%M UTC') from main@$(echo ${{ github.sha }} | cut -c1-7)" || echo "Nothing to commit"
           git push origin production
-          echo "✅ production branch updated!"
-
-  # ─────────────────────────────────────────────────────────
-  # JOB 2: Deploy production branch → Hostinger via FTP
-  # ─────────────────────────────────────────────────────────
-  deploy-hostinger:
-    name: 🌐 Deploy production → Hostinger
-    runs-on: ubuntu-latest
-    needs: build-and-push
-    environment:
-      name: production
-
-
-    steps:
-      - name: 📥 Checkout production branch (built files)
-        uses: actions/checkout@v4
-        with:
-          ref: production
-
-      - name: 📝 Inject production .env into API
-        run: |
-          cat > api/.env << ENVEOF
-          APP_NAME="TadbeerGo"
-          APP_ENV=production
-          APP_DEBUG=false
-          APP_URL=${{ secrets.APP_URL }}
-          FRONTEND_URL=${{ secrets.APP_URL }}
-
-          DB_HOST=${{ secrets.DB_HOST }}
-          DB_PORT=${{ secrets.DB_PORT }}
-          DB_NAME=${{ secrets.DB_NAME }}
-          DB_USER=${{ secrets.DB_USER }}
-          DB_PASS=${{ secrets.DB_PASS }}
-          DB_CHARSET=utf8mb4
-
-          SESSION_LIFETIME=86400
-          SESSION_SECURE=true
-          CSRF_SECRET=${{ secrets.CSRF_SECRET }}
-          CRON_SECRET=${{ secrets.CRON_SECRET }}
-
-          APP_TIMEZONE=Asia/Dhaka
-          ENVEOF
-          echo "✅ .env injected"
-
-      - name: 🚀 FTP — Deploy frontend → public_html/
-        uses: SamKirkland/FTP-Deploy-Action@v4.3.5
-        with:
-          server: ${{ secrets.FTP_HOST }}
-          username: ${{ secrets.FTP_USERNAME }}
-          password: ${{ secrets.FTP_PASSWORD }}
-          port: 21
-          local-dir: public_html/
-          server-dir: public_html/
-          protocol: ftps
-          dangerous-clean-slate: false
-          exclude: |
-            **/.git*
-            **/.git*/**
-            **/node_modules/**
-
-      - name: 🚀 FTP — Deploy PHP backend → api/
-        uses: SamKirkland/FTP-Deploy-Action@v4.3.5
-        with:
-          server: ${{ secrets.FTP_HOST }}
-          username: ${{ secrets.FTP_USERNAME }}
-          password: ${{ secrets.FTP_PASSWORD }}
-          port: 21
-          local-dir: api/
-          server-dir: api/
-          protocol: ftps
-          dangerous-clean-slate: false
-          exclude: |
-            **/.git*
-            **/.git*/**
-            **/database.sqlite
-
-      - name: ✅ Deployment complete
-        run: |
-          echo "========================================"
-          echo "  TadbeerGo → Hostinger ✅"
-          echo "  URL    : ${{ secrets.APP_URL }}"
-          echo "  Branch : production"
-          echo "  Commit : ${{ github.sha }}"
-          echo "  Time   : $(date -u '+%Y-%m-%d %H:%M:%S UTC')"
-          echo "========================================"
-
-  # ─────────────────────────────────────────────────────────
-  # JOB 3: Status report
-  # ─────────────────────────────────────────────────────────
-  status:
-    name: 📣 Deployment Status
-    runs-on: ubuntu-latest
-    needs: [build-and-push, deploy-hostinger]
-    if: always()
-
-    steps:
-      - name: ✅ Success
-        if: needs.deploy-hostinger.result == 'success'
-        run: |
-          echo "✅ DEPLOYMENT SUCCESS"
-          echo "Deployed by : ${{ github.actor }}"
-          echo "Source      : main@${{ github.sha }}"
-
-      - name: ❌ Failure
-        if: needs.deploy-hostinger.result == 'failure' || needs.build-and-push.result == 'failure'
-        run: |
-          echo "❌ DEPLOYMENT FAILED"
-          echo "Logs: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}"
-          exit 1
+          echo "✅ Done! production branch updated."
