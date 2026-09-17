@@ -1,9 +1,6 @@
-# TadbeerGo — Production Branch
+# TadbeerGo — Production Build
 
-This branch contains **auto-generated, production-ready** built files.
+Auto-generated from `main` branch. Do NOT edit directly.
 
-> ⚠️ **Do NOT edit this branch directly.**
-> All source code changes must go to the `main` branch.
-
-The `production` branch is automatically updated by GitHub Actions
-whenever code is pushed to `main`.
+Built: 2026-09-17 11:01 UTC
+Commit: d4afc5c8ec42d6e945e154a231a889db7ecf38b1
