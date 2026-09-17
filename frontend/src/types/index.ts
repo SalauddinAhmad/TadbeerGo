@@ -30,6 +30,7 @@ export interface User {
   role_name: 'owner' | 'ps_admin';
   role_display_name: string;
   permissions?: string[];
+  avatar?: string;
 }
 
 export interface Activity {
