@@ -1,4 +1,4 @@
-name: 🚀 Deploy to Hostinger (Production)
+name: 🚀 Build & Deploy to Hostinger
 
 on:
   # ✅ Manually trigger from GitHub Actions tab
@@ -11,16 +11,15 @@ on:
         type: choice
         options:
           - production
-          - staging
 
-  # ✅ Auto deploy on push to main branch
+  # ✅ Auto trigger on push to main branch
   push:
     branches:
       - main
 
 # Prevent concurrent deployments
 concurrency:
-  group: deploy-${{ github.ref }}
+  group: deploy-production
   cancel-in-progress: false
 
 jobs:
@@ -28,14 +27,17 @@ jobs:
   # JOB 1: Build Frontend
   # ─────────────────────────────────────────
   build-frontend:
-    name: 🔨 Build Frontend
+    name: 🔨 Build Frontend (React + Vite)
     runs-on: ubuntu-latest
 
     steps:
-      - name: 📥 Checkout code
+      - name: 📥 Checkout main (source code)
         uses: actions/checkout@v4
+        with:
+          ref: main
+          fetch-depth: 0
 
-      - name: 🟢 Setup Node.js
+      - name: 🟢 Setup Node.js 20
         uses: actions/setup-node@v4
         with:
           node-version: '20'
@@ -53,14 +55,12 @@ jobs:
           NODE_ENV: production
         run: npm run build
 
-      - name: 📂 List build output
+      - name: 📂 Show build output
         run: |
-          echo "=== Build Output ==="
-          ls -la frontend/dist/
-          echo "=== Assets folder ==="
-          ls -la frontend/dist/assets/ | head -20
+          echo "=== frontend/dist/ ==="
+          find frontend/dist -type f | head -40
 
-      - name: 📤 Upload frontend build artifact
+      - name: 📤 Upload build artifact
         uses: actions/upload-artifact@v4
         with:
           name: frontend-dist
@@ -68,71 +68,102 @@ jobs:
           retention-days: 1
 
   # ─────────────────────────────────────────
-  # JOB 2: Deploy to Hostinger via FTP
+  # JOB 2: Push built files to production branch
   # ─────────────────────────────────────────
-  deploy-hostinger:
-    name: 🌐 Deploy to Hostinger
+  push-to-production-branch:
+    name: 📦 Push Build → production branch
     runs-on: ubuntu-latest
     needs: build-frontend
-    environment:
-      name: production
-      url: ${{ secrets.APP_URL }}
 
     steps:
-      - name: 📥 Checkout code
+      - name: 📥 Checkout repo (full history)
         uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          token: ${{ secrets.GITHUB_TOKEN }}
 
       - name: 📥 Download frontend build
         uses: actions/download-artifact@v4
         with:
           name: frontend-dist
-          path: deploy/public_html
+          path: /tmp/frontend-dist
 
-      - name: 📋 Prepare backend files
+      - name: 🔀 Setup production branch
         run: |
-          mkdir -p deploy/api
-          cp -r api/config deploy/api/
-          cp -r api/controllers deploy/api/
-          cp -r api/core deploy/api/
-          cp -r api/cron deploy/api/
-          cp -r api/middleware deploy/api/
-          cp -r api/public deploy/api/
-          echo "Backend files prepared"
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
 
-      - name: 📝 Create production .htaccess
+          # Fetch production branch
+          git fetch origin production
+          git checkout production
+
+          # Clear old built files but keep README
+          find . -not -path './.git/*' -not -name 'README.md' -maxdepth 1 -type f -delete
+          find . -not -path './.git/*' -maxdepth 1 -type d | tail -n +2 | xargs rm -rf 2>/dev/null || true
+
+      - name: 📋 Copy files to production branch
         run: |
-          cat > deploy/public_html/.htaccess << 'HTACCESS'
+          # ─ Frontend built files → public_html/
+          mkdir -p public_html
+          cp -r /tmp/frontend-dist/. public_html/
+
+          # ─ PHP Backend → api/
+          git checkout main -- api/
+          git checkout main -- database/
+          git checkout main -- scripts/
+          git checkout main -- .env.example
+
+          # ─ Production .htaccess
+          cat > public_html/.htaccess << 'HTACCESS'
           <IfModule mod_rewrite.c>
               RewriteEngine On
-
-              # Force HTTPS
               RewriteCond %{HTTPS} off
               RewriteRule ^ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
-
-              # Route /api requests to PHP backend
               RewriteRule ^api/(.*)$ api/public/index.php [QSA,L]
-
-              # Frontend SPA routing (React Router)
               RewriteCond %{REQUEST_FILENAME} !-f
               RewriteCond %{REQUEST_FILENAME} !-d
               RewriteRule ^ index.html [L]
           </IfModule>
-
           <IfModule mod_headers.c>
               Header always set X-Content-Type-Options "nosniff"
               Header always set X-Frame-Options "SAMEORIGIN"
               Header always set X-XSS-Protection "1; mode=block"
           </IfModule>
-
           <FilesMatch "\.(js|css|png|jpg|jpeg|gif|ico|svg|woff|woff2|ttf|eot)$">
               Header set Cache-Control "max-age=31536000, public, immutable"
           </FilesMatch>
           HTACCESS
-          echo ".htaccess created"
 
-      - name: 📝 Create production environment config
+          echo "=== Production branch structure ==="
+          find . -not -path './.git/*' -type f | head -60
+
+      - name: 💾 Commit and push to production branch
         run: |
-          cat > deploy/api/.env << ENVFILE
+          git add -A
+          git commit -m "deploy: Build from main@${{ github.sha }} $(date -u '+%Y-%m-%d %H:%M UTC')" || echo "Nothing new to commit"
+          git push origin production
+          echo "✅ production branch updated!"
+
+  # ─────────────────────────────────────────
+  # JOB 3: Deploy production branch → Hostinger
+  # ─────────────────────────────────────────
+  deploy-hostinger:
+    name: 🌐 Deploy production → Hostinger (FTP)
+    runs-on: ubuntu-latest
+    needs: push-to-production-branch
+    environment:
+      name: production
+      url: ${{ secrets.APP_URL }}
+
+    steps:
+      - name: 📥 Checkout production branch (built files)
+        uses: actions/checkout@v4
+        with:
+          ref: production
+
+      - name: 📝 Create production .env for PHP API
+        run: |
+          cat > api/.env << ENVFILE
           APP_NAME="TadbeerGo"
           APP_ENV=production
           APP_DEBUG=false
@@ -153,65 +184,69 @@ jobs:
 
           APP_TIMEZONE=Asia/Dhaka
           ENVFILE
-          echo "Production .env created"
+          echo "✅ Production .env created"
 
-      - name: 🚀 Deploy frontend to Hostinger
+      - name: 🚀 Deploy frontend → Hostinger public_html/
         uses: SamKirkland/FTP-Deploy-Action@v4.3.5
         with:
           server: ${{ secrets.FTP_HOST }}
           username: ${{ secrets.FTP_USERNAME }}
           password: ${{ secrets.FTP_PASSWORD }}
           port: 21
-          local-dir: deploy/public_html/
+          local-dir: public_html/
           server-dir: public_html/
           protocol: ftps
           dangerous-clean-slate: false
           exclude: |
             **/.git*
             **/.git*/**
-            **/node_modules/**
 
-      - name: 🚀 Deploy PHP backend to Hostinger
+      - name: 🚀 Deploy PHP backend → Hostinger api/
         uses: SamKirkland/FTP-Deploy-Action@v4.3.5
         with:
           server: ${{ secrets.FTP_HOST }}
           username: ${{ secrets.FTP_USERNAME }}
           password: ${{ secrets.FTP_PASSWORD }}
           port: 21
-          local-dir: deploy/api/
+          local-dir: api/
           server-dir: api/
           protocol: ftps
           dangerous-clean-slate: false
           exclude: |
             **/.git*
             **/.git*/**
+            **/database.sqlite
 
       - name: ✅ Deployment Complete
         run: |
-          echo "TadbeerGo deployed to Hostinger!"
-          echo "URL: ${{ secrets.APP_URL }}"
-          echo "Commit: ${{ github.sha }}"
+          echo "================================================"
+          echo "  TadbeerGo → Hostinger"
+          echo "  URL    : ${{ secrets.APP_URL }}"
+          echo "  Branch : production"
+          echo "  Source : main@${{ github.sha }}"
+          echo "  Time   : $(date -u '+%Y-%m-%d %H:%M:%S UTC')"
+          echo "================================================"
 
   # ─────────────────────────────────────────
-  # JOB 3: Post-deploy notification
+  # JOB 4: Status notification
   # ─────────────────────────────────────────
   notify:
     name: 📣 Deployment Status
     runs-on: ubuntu-latest
-    needs: [build-frontend, deploy-hostinger]
+    needs: [build-frontend, push-to-production-branch, deploy-hostinger]
     if: always()
 
     steps:
       - name: ✅ Success
         if: needs.deploy-hostinger.result == 'success'
         run: |
-          echo "Deployment SUCCESS!"
-          echo "Repository: ${{ github.repository }}"
+          echo "✅ DEPLOYMENT SUCCESS"
           echo "Deployed by: ${{ github.actor }}"
+          echo "Commit: ${{ github.sha }}"
 
       - name: ❌ Failure
-        if: needs.deploy-hostinger.result == 'failure'
+        if: needs.deploy-hostinger.result == 'failure' || needs.push-to-production-branch.result == 'failure' || needs.build-frontend.result == 'failure'
         run: |
-          echo "Deployment FAILED!"
-          echo "Check: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}"
+          echo "❌ DEPLOYMENT FAILED"
+          echo "Logs: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}"
           exit 1
