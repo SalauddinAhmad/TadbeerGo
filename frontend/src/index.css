@@ -1,0 +1,586 @@
+@import "tailwindcss";
+
+/* ── Bornomala Bengali Font ── */
+@font-face {
+  font-family: 'Bornomala';
+  src: url('/fonts/Bornomala-Regular.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Bornomala';
+  src: url('/fonts/Bornomala-Bold.woff2') format('woff2');
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+
+@theme {
+  --font-sans: 'Plus Jakarta Sans', 'Inter', 'Bornomala', -apple-system, BlinkMacSystemFont, sans-serif;
+  --font-heading: 'Plus Jakarta Sans', 'Inter', 'Bornomala', -apple-system, BlinkMacSystemFont, sans-serif;
+  --font-mono: 'Plus Jakarta Sans', 'Poppins', ui-monospace, SFMono-Regular, Menlo, monospace;
+}
+
+@layer base {
+  :root {
+    --bg-main: #F7F9F7;
+    --bg-card: #FFFFFF;
+    --text-primary: #17211F;
+    --text-secondary: #6F7D78;
+    --text-muted: #9AA6A2;
+    --brand-primary: #063F35;
+    --brand-dark: #042F28;
+    --brand-accent: #00A878;
+    --brand-soft: #E8F5F0;
+    --border-subtle: #E4EBE8;
+    --color-success: #00A878;
+    --color-warning: #E8A317;
+    --color-error: #D9534F;
+    --color-info: #3978D6;
+    --shadow-card: 0 2px 10px -2px rgba(6, 63, 53, 0.04), 0 1px 2px rgba(0, 0, 0, 0.02);
+    --shadow-card-hover: 0 8px 24px -4px rgba(6, 63, 53, 0.07);
+    --radius-card: 1.125rem;
+  }
+
+  *, *::before, *::after {
+    box-sizing: border-box;
+  }
+
+  body {
+    background: #F7F9F7;
+    color: var(--text-primary);
+    font-family: var(--font-sans);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    -webkit-tap-highlight-color: transparent;
+    min-height: 100vh;
+    letter-spacing: -0.01em;
+    font-size: 14px;
+    line-height: 1.55;
+    touch-action: manipulation;
+    overscroll-behavior: none;
+  }
+
+  @media (min-width: 768px) {
+    body { font-size: 15px; line-height: 1.6; }
+  }
+
+  h1, h2, h3, h4, h5, h6, .font-heading {
+    font-family: var(--font-heading);
+    letter-spacing: -0.02em;
+    line-height: 1.2;
+    font-feature-settings: 'kern' 1;
+  }
+
+  .font-mono, [data-tabular], time {
+    font-feature-settings: 'tnum' 1;
+    font-variant-numeric: tabular-nums;
+  }
+
+  button { outline: none; }
+  button:focus-visible {
+    outline: 2px solid #2d6a4f;
+    outline-offset: 2px;
+    border-radius: 6px;
+  }
+}
+
+/* ============================================================
+   CARD & GLASS SYSTEM
+   ============================================================ */
+
+.pro-card {
+  background: var(--bg-card);
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
+  border: 1px solid rgba(210, 225, 215, 0.80);
+  border-radius: var(--radius-card);
+  box-shadow: var(--shadow-card);
+}
+
+.pro-card-hover {
+  transition: transform 0.22s cubic-bezier(0.16, 1, 0.3, 1),
+              box-shadow 0.22s cubic-bezier(0.16, 1, 0.3, 1),
+              border-color 0.22s ease;
+}
+.pro-card-hover:hover {
+  transform: translateY(-1px);
+  box-shadow: var(--shadow-card-hover);
+  border-color: rgba(45, 106, 79, 0.22);
+}
+
+/* Deep-green frosted hero banner */
+.glass-banner {
+  background: linear-gradient(150deg, #0c2218 0%, #143424 50%, #1e4d35 100%);
+  border-radius: 1.75rem;
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 20px 60px -15px rgba(12, 34, 24, 0.5);
+}
+
+/* Frosted pill — on dark glass surfaces */
+.frosted-pill {
+  background: rgba(255, 255, 255, 0.10);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  color: #ffffff;
+  transition: background 0.15s ease;
+}
+.frosted-pill:hover {
+  background: rgba(255, 255, 255, 0.20);
+}
+
+/* Active pill variants */
+.pill-active-orange {
+  background: #063F35;
+  color: #ffffff;
+  box-shadow: 0 4px 14px -3px rgba(6, 63, 53, 0.40);
+}
+.pill-active-emerald {
+  background: linear-gradient(135deg, #0c2218 0%, #163829 100%);
+  color: #ffffff;
+  box-shadow: 0 4px 14px -3px rgba(18, 55, 36, 0.40);
+}
+
+/* Activity / commitment row cards */
+.pill-item-row {
+  background: rgba(255, 255, 255, 0.97);
+  border: 1px solid rgba(215, 228, 220, 0.90);
+  border-radius: var(--radius-card);
+  box-shadow: 0 1px 3px rgba(15,26,20,0.03), 0 2px 8px -2px rgba(15,26,20,0.04);
+  transition: all 0.20s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.pill-item-row:hover {
+  background: #ffffff;
+  border-color: rgba(45, 106, 79, 0.28);
+  box-shadow: 0 2px 6px rgba(15,26,20,0.05), 0 8px 24px -6px rgba(15,26,20,0.08);
+}
+
+/* ============================================================
+   BADGES — Consistent, compact, semantic
+   ============================================================ */
+
+.badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+  padding: 0.18rem 0.55rem;
+  border-radius: 9999px;
+  font-size: 0.625rem;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  line-height: 1.4;
+}
+.badge-gold    { background:#fef9c3; color:#78350f; border:1px solid #fcd34d; }
+.badge-emerald { background:#ecfdf5; color:#065f46; border:1px solid #6ee7b7; }
+.badge-ruby    { background:#fff1f2; color:#9f1239; border:1px solid #fda4af; }
+.badge-sapphire{ background:#eff6ff; color:#1e40af; border:1px solid #93c5fd; }
+.badge-slate   { background:#f8fafc; color:#475569; border:1px solid #cbd5e1; }
+.badge-orange  { background:#fff7ed; color:#9a3412; border:1px solid #fdba74; }
+
+/* ============================================================
+   CUSTOM SCROLLBAR
+   ============================================================ */
+
+::-webkit-scrollbar { width: 4px; height: 4px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb {
+  background: rgba(100, 116, 139, 0.30);
+  border-radius: 9999px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(100, 116, 139, 0.55);
+}
+
+/* ============================================================
+   FULLCALENDAR THEME
+   ============================================================ */
+
+.fc {
+  font-family: inherit;
+  color: var(--text-primary);
+}
+.fc .fc-toolbar-title {
+  font-family: var(--font-heading);
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  letter-spacing: -0.02em;
+}
+.fc .fc-button {
+  background: #ffffff !important;
+  border: 1px solid #e2e8f0 !important;
+  color: #475569 !important;
+  border-radius: 0.625rem !important;
+  font-size: 0.725rem !important;
+  font-weight: 600 !important;
+  padding: 0.32rem 0.72rem !important;
+  text-transform: capitalize !important;
+  box-shadow: 0 1px 2px rgba(0,0,0,0.04) !important;
+  transition: all 0.15s ease !important;
+}
+.fc .fc-button:hover {
+  background: #f8fafc !important;
+  color: var(--text-primary) !important;
+  border-color: #cbd5e1 !important;
+}
+.fc .fc-button-active,
+.fc .fc-button-primary:not(:disabled).fc-button-active {
+  background: var(--text-primary) !important;
+  border-color: var(--text-primary) !important;
+  color: #ffffff !important;
+}
+.fc-theme-standard td, .fc-theme-standard th {
+  border-color: #edf2ed !important;
+}
+.fc .fc-col-header-cell-cushion {
+  color: #64748b;
+  font-size: 0.68rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.07em;
+  padding: 10px 0;
+}
+.fc .fc-daygrid-day-number {
+  color: #475569;
+  font-size: 0.78rem;
+  font-weight: 500;
+}
+.fc .fc-daygrid-day.fc-day-today {
+  background: rgba(236, 253, 245, 0.65) !important;
+}
+.fc .fc-daygrid-day.fc-day-today .fc-daygrid-day-number {
+  background: var(--text-primary);
+  color: #fff;
+  border-radius: 50%;
+  width: 22px;
+  height: 22px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.72rem;
+  font-weight: 700;
+}
+.fc-event {
+  border-radius: 5px;
+  padding: 2px 5px;
+  font-size: 0.68rem;
+  font-weight: 600;
+  border: none;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.08);
+}
+
+/* ============================================================
+   MOBILE NATIVE BOTTOM DOCK
+   ============================================================ */
+
+@supports (padding-bottom: env(safe-area-inset-bottom)) {
+  .safe-area-bottom {
+    padding-bottom: calc(env(safe-area-inset-bottom) + 0.5rem);
+  }
+  .safe-area-top {
+    padding-top: env(safe-area-inset-top);
+  }
+}
+
+.mobile-dock-bar {
+  background: rgba(255, 255, 255, 0.93);
+  backdrop-filter: blur(28px);
+  -webkit-backdrop-filter: blur(28px);
+  border-top: 1px solid rgba(210, 225, 215, 0.75);
+  box-shadow: 0 -6px 20px -4px rgba(15, 26, 20, 0.06);
+}
+
+.mobile-dock-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 0.4rem 0.3rem;
+  color: #94a3b8;
+  font-size: 0.58rem;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  transition: color 0.15s ease, transform 0.15s cubic-bezier(0.16, 1, 0.3, 1);
+  user-select: none;
+  -webkit-user-select: none;
+}
+.mobile-dock-item:active { transform: scale(0.88); }
+.mobile-dock-item.active { color: #065f46; font-weight: 700; }
+
+.mobile-center-fab {
+  background: linear-gradient(145deg, #0f1a14 0%, #163829 60%, #1e4d35 100%);
+  color: #ffffff;
+  width: 3rem;
+  height: 3rem;
+  border-radius: 9999px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 6px 18px -3px rgba(15, 40, 28, 0.55), 0 0 0 3px #ffffff;
+  margin-top: -1rem;
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+.mobile-center-fab:active {
+  transform: scale(0.88);
+  box-shadow: 0 3px 10px -2px rgba(15, 40, 28, 0.4), 0 0 0 3px #ffffff;
+}
+
+/* Mobile Sheet Slide-up */
+@keyframes slideUpMobile {
+  from { transform: translateY(100%); opacity: 0; }
+  to   { transform: translateY(0);    opacity: 1; }
+}
+.animate-slide-up-mobile {
+  animation: slideUpMobile 0.22s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+/* ============================================================
+   FORM INPUTS — Sharp focus ring, consistent sizing
+   ============================================================ */
+
+.form-input {
+  width: 100%;
+  padding: 0.65rem 0.95rem;
+  background: #f8fafc;
+  border: 1.5px solid #e2e8f0;
+  border-radius: 0.75rem;
+  font-size: 0.875rem;
+  color: var(--text-primary);
+  transition: border-color 0.15s ease, background 0.15s ease, box-shadow 0.15s ease;
+  outline: none;
+  font-family: inherit;
+}
+.form-input:hover { background: #f1f5f9; border-color: #cbd5e1; }
+.form-input:focus {
+  background: #ffffff;
+  border-color: #2d6a4f;
+  box-shadow: 0 0 0 3px rgba(45, 106, 79, 0.12);
+}
+
+/* ============================================================
+   UTILITY
+   ============================================================ */
+
+.transition-smooth {
+  transition: all 0.22s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.hover-lift:hover { transform: translateY(-1px); }
+.press-scale:active { transform: scale(0.96); }
+
+/* ============================================================
+   📱 MOBILE-FIRST PREMIUM NATIVE APP STYLES
+   ============================================================ */
+
+/* ── Native-feel horizontal swipe scroll ── */
+.swipe-scroll {
+  display: flex;
+  gap: 0.75rem;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  scroll-snap-type: x mandatory;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+  padding-bottom: 4px;
+}
+.swipe-scroll::-webkit-scrollbar { display: none; }
+.swipe-scroll > * { scroll-snap-align: start; flex-shrink: 0; }
+
+/* ── Mobile Today Event Card ── */
+.today-card {
+  background: #fff;
+  border-radius: 1.125rem;
+  padding: 0.875rem;
+  border: 1px solid rgba(210, 225, 215, 0.85);
+  box-shadow: 0 2px 12px -4px rgba(15,26,20,0.08);
+  width: 210px;
+  position: relative;
+  overflow: hidden;
+}
+.today-card:active { opacity: 0.92; }
+.today-card-accent {
+  position: absolute;
+  left: 0; top: 0; bottom: 0;
+  width: 4px;
+}
+.today-card-accent.jumuah  { background: linear-gradient(180deg,#063F35,#00A878); }
+.today-card-accent.class   { background: linear-gradient(180deg,#063F35,#00A878); }
+.today-card-accent.prog    { background: linear-gradient(180deg,#00A878,#063F35); }
+.today-card-accent.meeting { background: linear-gradient(180deg,#17211F,#063F35); }
+.today-card-accent.travel  { background: linear-gradient(180deg,#00A878,#063F35); }
+
+/* ── Mobile Activity Row ── */
+.mob-activity-row {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  background: rgba(255,255,255,0.97);
+  border: 1px solid #E4EBE8;
+  border-radius: 1rem;
+  padding: 0.75rem 0.875rem;
+  box-shadow: 0 1px 4px rgba(15,26,20,0.04);
+  transition: all 0.15s ease;
+  position: relative;
+  overflow: hidden;
+}
+.mob-activity-row:active { background: #f8faf9; }
+.mob-activity-row::before {
+  content: '';
+  position: absolute;
+  left: 0; top: 0; bottom: 0;
+  width: 3px;
+}
+.mob-activity-row.type-jumuah::before  { background: #00A878; }
+.mob-activity-row.type-class::before   { background: #063F35; }
+.mob-activity-row.type-prog::before    { background: #00A878; }
+.mob-activity-row.type-meeting::before { background: #17211F; }
+.mob-activity-row.type-travel::before  { background: #00A878; }
+
+/* ── Mobile Date Chip ── */
+.mob-date-chip {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 38px;
+  height: 44px;
+  border-radius: 0.75rem;
+  background: #f1f5f9;
+  flex-shrink: 0;
+}
+.mob-date-chip.today {
+  background: linear-gradient(145deg,#0f1a14,#1e4d35);
+  color: #fff;
+}
+.mob-date-chip.friday { background: #fef3c7; color: #92400e; }
+
+/* ── Mobile Course Chip ── */
+.course-chip {
+  background: #fff;
+  border: 1.5px solid rgba(210,225,215,0.9);
+  border-radius: 1.125rem;
+  padding: 0.875rem 1rem;
+  width: 175px;
+  flex-shrink: 0;
+  scroll-snap-align: start;
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 2px 8px -3px rgba(15,26,20,0.07);
+}
+.course-chip-bar {
+  position: absolute;
+  bottom: 0; left: 0; right: 0;
+  height: 3px;
+  background: #e2e8f0;
+}
+.course-chip-fill {
+  height: 100%;
+  background: linear-gradient(90deg,#059669,#10b981);
+}
+
+/* ── Waqt pill (hero bottom) ── */
+.waqt-bar {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.375rem;
+  background: rgba(255,255,255,0.14);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border: 1px solid rgba(255,255,255,0.2);
+  border-radius: 9999px;
+  padding: 0.3rem 0.8rem;
+  font-size: 0.68rem;
+  font-weight: 600;
+  color: rgba(255,255,255,0.92);
+}
+
+/* ── Mobile section label ── */
+.mob-section-label {
+  font-size: 0.62rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: #94a3b8;
+  padding: 0 0.125rem;
+}
+
+/* ── Bottom Dock Overrides ── */
+.mobile-dock-bar {
+  background: rgba(255,255,255,0.96) !important;
+  backdrop-filter: blur(32px) saturate(180%) !important;
+  -webkit-backdrop-filter: blur(32px) saturate(180%) !important;
+  border-top: 1px solid rgba(210,225,215,0.55) !important;
+  box-shadow: 0 -1px 0 rgba(210,225,215,0.4), 0 -8px 28px -6px rgba(15,26,20,0.07) !important;
+}
+
+.dock-icon-wrap {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform 0.15s cubic-bezier(0.16,1,0.3,1);
+}
+.mobile-dock-item {
+  color: #94a3b8;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  padding: 2px 10px;
+  transition: all 0.2s ease;
+}
+.mobile-dock-item.active {
+  color: #065f46 !important;
+  font-weight: 700;
+}
+.mobile-dock-item.active .dock-icon-wrap {
+  transform: translateY(-1px);
+}
+.mobile-dock-item.active::after {
+  content: '';
+  position: absolute;
+  bottom: -2px;
+  width: 4px;
+  height: 4px;
+  border-radius: 9999px;
+  background: #059669;
+}
+.mobile-dock-item:active .dock-icon-wrap {
+  transform: scale(0.9);
+}
+
+.mobile-center-fab {
+  background: linear-gradient(145deg,#0f1a14 0%,#1a3829 55%,#1e4d35 100%) !important;
+  width: 50px !important;
+  height: 50px !important;
+  box-shadow:
+    0 0 0 3.5px #fff,
+    0 6px 20px -3px rgba(15,40,28,0.55),
+    0 0 16px -4px rgba(16,185,129,0.25) !important;
+  margin-top: -13px !important;
+}
+
+/* ── More sheet module button ── */
+.mob-sheet-btn {
+  width: 100%;
+  padding: 0.875rem 1rem;
+  border-radius: 1.125rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  transition: background 0.15s ease;
+  border: 1.5px solid;
+}
+.mob-sheet-btn.active  { background: #f0fdf4; border-color: rgba(16,185,129,0.28); }
+.mob-sheet-btn.inactive{ background: #f8fafc; border-color: rgba(226,232,240,0.8); }
+.mob-sheet-btn:active  { opacity: 0.85; }
+
+/* iOS momentum scroll */
+.scroll-ios {
+  -webkit-overflow-scrolling: touch;
+  overscroll-behavior-y: contain;
+}
