@@ -32,15 +32,17 @@ self.addEventListener('activate', (event) => {
 });
 
 self.addEventListener('fetch', (event) => {
-  // Never cache API requests
-  if (event.request.url.includes('/api/')) {
+  // Never cache API requests or local development server requests
+  if (
+    event.request.url.includes('/api/') ||
+    self.location.hostname === 'localhost' ||
+    self.location.hostname === '127.0.0.1'
+  ) {
     return;
   }
 
   event.respondWith(
-    caches.match(event.request).then((cachedResponse) => {
-      return cachedResponse || fetch(event.request);
-    })
+    fetch(event.request).catch(() => caches.match(event.request))
   );
 });
 

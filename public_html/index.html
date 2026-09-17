@@ -30,17 +30,18 @@
   <body class="antialiased selection:bg-emerald-500/20 selection:text-emerald-900 font-sans">
     <div id="root"></div>
     <script>
-      // Register Service Worker for PWA and Push Notifications
-      if ('serviceWorker' in navigator && (window.location.protocol === 'https:' || window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1')) {
-        window.addEventListener('load', () => {
-          navigator.serviceWorker.register('/sw.js')
-            .then(reg => {
-              console.log('[PWA] Service Worker registered successfully:', reg.scope);
-            })
-            .catch(err => {
-              console.warn('[PWA] Service Worker registration failed:', err);
-            });
-        });
+      // Register Service Worker for PWA on production HTTPS
+      if ('serviceWorker' in navigator) {
+        if (window.location.protocol === 'https:') {
+          window.addEventListener('load', () => {
+            navigator.serviceWorker.register('/sw.js').catch(() => {});
+          });
+        } else if (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1') {
+          // Unregister old service workers in local development to prevent stale caches
+          navigator.serviceWorker.getRegistrations().then(registrations => {
+            for (let reg of registrations) reg.unregister();
+          });
+        }
       }
     </script>
   </body>
