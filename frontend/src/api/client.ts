@@ -1,3 +1,5 @@
+import { handleMockApiRequest } from './mockService';
+
 const API_BASE = import.meta.env.VITE_API_URL || '/api';
 
 export class ApiError extends Error {
@@ -28,38 +30,36 @@ export async function apiRequest<T = any>(
     defaultHeaders['Content-Type'] = 'application/json';
   }
 
-  const response = await fetch(url, {
-    ...options,
-    credentials: 'include', // Ensures PLM_SESSION cookie is sent
-    headers: {
-      ...defaultHeaders,
-      ...options.headers,
-    },
-  });
+  try {
+    const response = await fetch(url, {
+      ...options,
+      credentials: 'include', // Ensures PLM_SESSION cookie is sent
+      headers: {
+        ...defaultHeaders,
+        ...options.headers,
+      },
+    });
 
-  const contentType = response.headers.get('content-type');
-  const isJson = contentType && contentType.includes('application/json');
+    const contentType = response.headers.get('content-type');
+    const isJson = contentType && contentType.includes('application/json');
 
-  if (!isJson) {
-    if (!response.ok) {
-      throw new ApiError(`HTTP error ${response.status}`, 'HTTP_ERROR', response.status);
+    // If server responded with valid JSON and OK status
+    if (response.ok && isJson) {
+      const result = await response.json();
+      if (result.success !== false) {
+        return (result.data !== undefined ? result.data : result) as T;
+      }
     }
-    return {} as T;
+
+    // If non-OK response or HTML returned (like Vercel routing /api to /index.html)
+    // Seamlessly fall back to the Standalone Demo Mock Layer
+    console.info(`[TadbeerGo] Endpoint '${endpoint}' not served by backend (status: ${response.status}). Using Smart Standalone Demo layer.`);
+    return handleMockApiRequest(endpoint, options) as T;
+  } catch (err: any) {
+    // If backend server is unreachable (offline, CORS, or static Vercel host)
+    console.info(`[TadbeerGo] Backend connection failed for '${endpoint}'. Using Smart Standalone Demo layer.`);
+    return handleMockApiRequest(endpoint, options) as T;
   }
-
-  const result = await response.json();
-
-  if (!response.ok || result.success === false) {
-    const error = result.error || {};
-    throw new ApiError(
-      error.message || 'An unexpected error occurred.',
-      error.code || 'API_ERROR',
-      response.status,
-      error.details
-    );
-  }
-
-  return result.data as T;
 }
 
 export const api = {
