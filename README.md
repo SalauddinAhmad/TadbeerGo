@@ -2,5 +2,5 @@
 
 Auto-generated from `main` branch. Do NOT edit directly.
 
-Built: 2026-09-17 21:11 UTC
-Commit: e1dca499513b3cf7810c6b0f87c21a837249efb3
+Built: 2026-10-03 00:01 UTC
+Commit: e1508798a0fc2edc71be6e91153cabe9c17d4807
