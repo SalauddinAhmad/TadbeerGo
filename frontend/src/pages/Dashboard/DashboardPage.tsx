@@ -31,7 +31,8 @@ import {
   formatBanglaTime,
   formatBanglaDate,
   formatBengaliActivityTitle,
-  formatBengaliTopic
+  formatBengaliTopic,
+  getLocalDateString
 } from '../../utils/bengali';
 
 interface DashboardPageProps {
@@ -171,11 +172,11 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({ onNavigate }) => {
   // Active Tab for Right Bento Schedule: 'TODAY' (default, primary) or 'TOMORROW' (next)
   const [scheduleViewTab, setScheduleViewTab] = useState<'TODAY' | 'TOMORROW'>('TODAY');
 
-  const todayStr = useMemo(() => new Date().toISOString().split('T')[0], []);
+  const todayStr = useMemo(() => getLocalDateString(new Date()), []);
   const tomorrowStr = useMemo(() => {
     const d = new Date();
     d.setDate(d.getDate() + 1);
-    return d.toISOString().split('T')[0];
+    return getLocalDateString(d);
   }, []);
 
   // Default to today's index in week (starting Saturday = 0 in BD calendar)
@@ -198,7 +199,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({ onNavigate }) => {
       const d = new Date(saturday);
       d.setDate(saturday.getDate() + i);
       const isToday = d.toDateString() === now.toDateString();
-      const dateStr = d.toISOString().split('T')[0];
+      const dateStr = getLocalDateString(d);
       const isPast = dateStr < todayStr;
       const isTomorrow = dateStr === tomorrowStr;
 
@@ -405,7 +406,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({ onNavigate }) => {
           <p className="text-xs sm:text-[13px] text-[#586661] mt-0.5 font-medium flex items-center gap-1.5">
             <span>আজকের দিনটি বরকতময় হোক</span>
             <span>·</span>
-            <span className="font-semibold text-[#3E5514]">{formatBanglaDate(new Date().toISOString().split('T')[0])}</span>
+            <span className="font-semibold text-[#3E5514]">{formatBanglaDate(todayStr)}</span>
           </p>
         </div>
 

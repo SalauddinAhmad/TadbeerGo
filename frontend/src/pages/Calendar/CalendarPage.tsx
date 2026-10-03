@@ -30,7 +30,7 @@ import { MosqueIcon, MosqueCustomIllustration, QuranRehalIcon, MinbarIcon } from
 import { api } from '../../api/client';
 import { Activity } from '../../types';
 import { EventDetailsSheet } from '../../components/modals/EventDetailsSheet';
-import { toBengaliDigits, formatBanglaDate, formatBanglaTime } from '../../utils/bengali';
+import { toBengaliDigits, formatBanglaDate, formatBanglaTime, getLocalDateString } from '../../utils/bengali';
 
 interface DayScheduleItem {
   id: string | number;
@@ -46,8 +46,8 @@ interface DayScheduleItem {
 
 export const CalendarPage: React.FC = () => {
   // Default dynamically to current today date
-  const todayStr = useMemo(() => new Date().toISOString().split('T')[0], []);
-  const [selectedDateStr, setSelectedDateStr] = useState<string>(() => new Date().toISOString().split('T')[0]);
+  const todayStr = useMemo(() => getLocalDateString(new Date()), []);
+  const [selectedDateStr, setSelectedDateStr] = useState<string>(() => getLocalDateString(new Date()));
   const [currentMonthDate, setCurrentMonthDate] = useState<Date>(new Date(2026, 9, 1));
   const [viewMode, setViewMode] = useState<'GRID' | 'TIMELINE'>('GRID');
 
@@ -445,7 +445,7 @@ export const CalendarPage: React.FC = () => {
     for (let i = 0; i < 7; i++) {
       const d = new Date(startOfWeek);
       d.setDate(startOfWeek.getDate() + i);
-      const dStr = d.toISOString().split('T')[0];
+      const dStr = getLocalDateString(d);
       const count = (events.filter((a) => a.date === dStr).length) || (localDayEvents[dStr]?.length || 0);
       days.push({
         dayName: bNames[i],
@@ -482,7 +482,7 @@ interface CalendarCell {
     for (let i = firstDaySatIndex - 1; i >= 0; i--) {
       const dNum = prevMonthTotalDays - i;
       const prevDate = new Date(curYear, curMonthIndex - 1, dNum);
-      const dStr = prevDate.toISOString().split('T')[0];
+      const dStr = getLocalDateString(prevDate);
       const count = (events.filter((a) => a.date === dStr).length) || (localDayEvents[dStr]?.length || 0);
       cells.push({
         dayNum: dNum,
@@ -497,7 +497,7 @@ interface CalendarCell {
     // Days of current month
     for (let d = 1; d <= totalDays; d++) {
       const curDate = new Date(curYear, curMonthIndex, d);
-      const dStr = curDate.toISOString().split('T')[0];
+      const dStr = getLocalDateString(curDate);
       const count = (events.filter((a) => a.date === dStr).length) || (localDayEvents[dStr]?.length || 0);
       const isFriday = cells.length % 7 === 6;
       const cellDayEvents = localDayEvents[dStr] || events.filter((a) => a.date === dStr);
@@ -519,7 +519,7 @@ interface CalendarCell {
     const remaining = totalCellsNeeded - cells.length;
     for (let d = 1; d <= remaining; d++) {
       const nextDate = new Date(curYear, curMonthIndex + 1, d);
-      const dStr = nextDate.toISOString().split('T')[0];
+      const dStr = getLocalDateString(nextDate);
       const count = (events.filter((a) => a.date === dStr).length) || (localDayEvents[dStr]?.length || 0);
       cells.push({
         dayNum: d,

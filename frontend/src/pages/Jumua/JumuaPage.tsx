@@ -42,7 +42,7 @@ import {
 } from '../../components/icons/IslamicIcons';
 import { JumuaEvent, Mosque } from '../../types';
 import { api } from '../../api/client';
-import { toBengaliDigits, formatBanglaDate } from '../../utils/bengali';
+import { toBengaliDigits, formatBanglaDate, getLocalDateString } from '../../utils/bengali';
 
 interface TopicCategory {
   category: string;
@@ -295,7 +295,7 @@ export const JumuaPage: React.FC = () => {
   };
 
   // Find immediate next Friday from today
-  const todayStr = new Date().toISOString().split('T')[0];
+  const todayStr = getLocalDateString(new Date());
   const upcomingFridays = fridays.filter((f) => f.date >= todayStr);
   const nextConfirmed = upcomingFridays.find((f) => f.status === 'CONFIRMED' && f.mosque_name);
   const immediateUpcoming = upcomingFridays.length > 0 ? upcomingFridays[0] : null;

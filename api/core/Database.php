@@ -20,6 +20,8 @@ class Database {
                     $config['password'],
                     $config['options']
                 );
+                // Ensure MySQL session time aligns with Asia/Dhaka (+06:00) on any cloud host
+                self::$instance->exec("SET time_zone = '+06:00'");
             } catch (PDOException $e) {
                 // In production do not expose credentials
                 error_log("Database Connection Error: " . $e->getMessage());

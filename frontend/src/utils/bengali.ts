@@ -18,6 +18,16 @@ export const toBengaliDigits = (num: number | string): string => {
   return str.replace(/[0-9]/g, (digit) => bengaliNumerals[digit] || digit);
 };
 
+/**
+ * Returns YYYY-MM-DD in local system time (prevents midnight UTC backward shift)
+ */
+export const getLocalDateString = (date: Date = new Date()): string => {
+  const year = date.getFullYear();
+  const month = String(date.getMonth() + 1).padStart(2, '0');
+  const day = String(date.getDate()).padStart(2, '0');
+  return `${year}-${month}-${day}`;
+};
+
 export const formatBanglaTime = (timeStr?: string): string => {
   if (!timeStr) return 'বিকাল ৫:০০';
   const parts = timeStr.split(':').map(Number);
