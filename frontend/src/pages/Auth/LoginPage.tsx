@@ -7,13 +7,16 @@ import {
   EyeOff,
   CheckCircle2,
   ShieldCheck,
-  Sparkles
+  Sparkles,
+  UserCheck,
+  Briefcase
 } from 'lucide-react';
 import { RubElHizbIcon } from '../../components/icons/IslamicIcons';
 import { useAuth } from '../../context/AuthContext';
 
 export const LoginPage: React.FC = () => {
   const { login } = useAuth();
+  const [selectedRole, setSelectedRole] = useState<'owner' | 'ps'>('owner');
   const [email, setEmail] = useState('admin@mokhterahmad.com');
   const [password, setPassword] = useState('password123');
   const [showPassword, setShowPassword] = useState(false);
@@ -33,7 +36,9 @@ export const LoginPage: React.FC = () => {
     }
   };
 
-  const setDemoCredentials = (role: 'owner' | 'ps') => {
+  const handleSelectRole = (role: 'owner' | 'ps') => {
+    setSelectedRole(role);
+    setError('');
     if (role === 'owner') {
       setEmail('admin@mokhterahmad.com');
       setPassword('password123');
@@ -57,11 +62,11 @@ export const LoginPage: React.FC = () => {
         {/* =========================================================================
             SCHOLAR PORTRAIT & EDITORIAL HEADER
            ========================================================================= */}
-        <div className="flex flex-col items-center text-center mb-7">
+        <div className="flex flex-col items-center text-center mb-6">
           
           {/* Portrait Container with Crisp Double Ring */}
-          <div className="relative mb-4 group">
-            <div className="w-24 h-24 rounded-full p-1 bg-gradient-to-tr from-[#3E5514] via-[#4D6819] to-[#6E3A0D] shadow-md">
+          <div className="relative mb-3.5 group">
+            <div className="w-20 h-20 rounded-full p-1 bg-gradient-to-tr from-[#3E5514] via-[#4D6819] to-[#6E3A0D] shadow-md">
               <div className="w-full h-full rounded-full overflow-hidden bg-[#3E5514]">
                 <img
                   src="/shaikh-portrait.jpg"
@@ -72,8 +77,8 @@ export const LoginPage: React.FC = () => {
             </div>
 
             {/* Verified Badge */}
-            <div className="absolute bottom-0 right-0 w-7 h-7 rounded-full bg-[#3E5514] text-white flex items-center justify-center border-2 border-white shadow-xs">
-              <CheckCircle2 size={15} strokeWidth={2.8} />
+            <div className="absolute bottom-0 right-0 w-6 h-6 rounded-full bg-[#3E5514] text-white flex items-center justify-center border-2 border-white shadow-xs">
+              <CheckCircle2 size={13} strokeWidth={2.8} />
             </div>
           </div>
 
@@ -85,11 +90,89 @@ export const LoginPage: React.FC = () => {
           </div>
 
           {/* Scholar Subtitle Badge */}
-          <div className="mt-2 inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full bg-[#FDF5ED] border border-[#EAD7C7] text-xs font-semibold text-[#586661]">
-            <RubElHizbIcon size={12} className="text-[#6E3A0D]" />
+          <div className="mt-1.5 inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-[#FDF5ED] border border-[#EAD7C7] text-xs font-semibold text-[#586661]">
+            <RubElHizbIcon size={11} className="text-[#6E3A0D]" />
             <span>শায়খ মোখতার আহমাদ</span>
             <span className="text-[#EAD7C7]">·</span>
-            <span className="text-[#6E3A0D] font-bold">ডিজিটাল ডায়েরি</span>
+            <span className="text-[#6E3A0D] font-bold">ব্যক্তিগত পোর্টাল</span>
+          </div>
+        </div>
+
+        {/* =========================================================================
+            SMART EXECUTIVE ROLE SELECTOR (REPLACES RAW EMOJIS)
+           ========================================================================= */}
+        <div className="mb-5 space-y-2 text-left">
+          <div className="flex items-center justify-between text-xs font-bold font-heading text-[#586661] px-1">
+            <span>প্রবেশের প্রোফাইল বেছে নিন</span>
+            <span className="text-[10px] text-[#3E5514] font-semibold bg-[#F2F6EC] px-2 py-0.5 rounded-full border border-[#D2DEC1]">
+              ১-ক্লিক সুইচ
+            </span>
+          </div>
+
+          <div className="grid grid-cols-2 gap-2.5">
+            {/* Option 1: Scholar / Principal */}
+            <button
+              type="button"
+              onClick={() => handleSelectRole('owner')}
+              className={`p-3 rounded-2xl border transition-all text-left cursor-pointer relative overflow-hidden group ${
+                selectedRole === 'owner'
+                  ? 'bg-gradient-to-br from-[#F4F8F0] to-[#EAF2E2] border-[#3E5514] shadow-sm ring-2 ring-[#3E5514]/20'
+                  : 'bg-[#FAF7F2] hover:bg-[#F5EFE6] border-[#E8E2D7] text-[#586661]'
+              }`}
+            >
+              <div className="flex items-center gap-2 mb-1">
+                <div className={`w-7 h-7 rounded-xl flex items-center justify-center shrink-0 border transition ${
+                  selectedRole === 'owner'
+                    ? 'bg-[#3E5514] text-white border-[#3E5514]'
+                    : 'bg-white text-[#586661] border-[#E8E2D7]'
+                }`}>
+                  <UserCheck size={14} strokeWidth={2.5} />
+                </div>
+                <span className={`text-xs font-bold font-heading truncate ${
+                  selectedRole === 'owner' ? 'text-[#1E310E]' : 'text-[#16221E]'
+                }`}>
+                  শায়খ মোখতার
+                </span>
+              </div>
+              <p className="text-[10px] font-medium text-[#7A8A84] truncate pl-0.5">
+                প্রধান স্কলার ও মালিক
+              </p>
+              {selectedRole === 'owner' && (
+                <span className="absolute top-2.5 right-2.5 w-1.5 h-1.5 rounded-full bg-[#3E5514] shadow-[0_0_6px_#3E5514]"></span>
+              )}
+            </button>
+
+            {/* Option 2: Executive Secretary / PS */}
+            <button
+              type="button"
+              onClick={() => handleSelectRole('ps')}
+              className={`p-3 rounded-2xl border transition-all text-left cursor-pointer relative overflow-hidden group ${
+                selectedRole === 'ps'
+                  ? 'bg-gradient-to-br from-[#FDF6EF] to-[#F8ECE0] border-[#6E3A0D] shadow-sm ring-2 ring-[#6E3A0D]/20'
+                  : 'bg-[#FAF7F2] hover:bg-[#F5EFE6] border-[#E8E2D7] text-[#586661]'
+              }`}
+            >
+              <div className="flex items-center gap-2 mb-1">
+                <div className={`w-7 h-7 rounded-xl flex items-center justify-center shrink-0 border transition ${
+                  selectedRole === 'ps'
+                    ? 'bg-[#6E3A0D] text-white border-[#6E3A0D]'
+                    : 'bg-white text-[#586661] border-[#E8E2D7]'
+                }`}>
+                  <Briefcase size={13} strokeWidth={2.5} />
+                </div>
+                <span className={`text-xs font-bold font-heading truncate ${
+                  selectedRole === 'ps' ? 'text-[#4A2608]' : 'text-[#16221E]'
+                }`}>
+                  অফিস সচিব (পিএস)
+                </span>
+              </div>
+              <p className="text-[10px] font-medium text-[#7A8A84] truncate pl-0.5">
+                শিডিউল ও সমন্বয়কারী
+              </p>
+              {selectedRole === 'ps' && (
+                <span className="absolute top-2.5 right-2.5 w-1.5 h-1.5 rounded-full bg-[#6E3A0D] shadow-[0_0_6px_#6E3A0D]"></span>
+              )}
+            </button>
           </div>
         </div>
 
@@ -150,7 +233,7 @@ export const LoginPage: React.FC = () => {
             </div>
           </div>
 
-          {/* Primary Submit Button - Chocolate Pill matching user reference */}
+          {/* Primary Submit Button - Styled to Match Active Role */}
           <button
             type="submit"
             disabled={loading}
@@ -160,7 +243,9 @@ export const LoginPage: React.FC = () => {
               <span>যাচাই করা হচ্ছে...</span>
             ) : (
               <>
-                <span>ড্যাশবোর্ডে প্রবেশ করুন</span>
+                <span>
+                  {selectedRole === 'owner' ? 'শায়খ ড্যাশবোর্ডে প্রবেশ করুন' : 'পিএস পোর্টালে প্রবেশ করুন'}
+                </span>
                 <span className="w-6 h-6 rounded-full bg-[#8A603E] text-white flex items-center justify-center shrink-0">
                   <ArrowRight size={13} strokeWidth={2.5} />
                 </span>
@@ -169,27 +254,10 @@ export const LoginPage: React.FC = () => {
           </button>
         </form>
 
-        {/* Demo Fast Login Pills */}
-        <div className="mt-6 pt-5 border-t border-[#F0EBE3] text-center">
-          <p className="text-[11px] font-semibold text-[#8A9893] mb-2.5">
-            দ্রুত ডেমো অ্যাকাউন্টে প্রবেশ করুন:
-          </p>
-          <div className="flex items-center justify-center gap-2">
-            <button
-              type="button"
-              onClick={() => setDemoCredentials('owner')}
-              className="px-3 py-1.5 rounded-full text-xs font-semibold bg-[#FAF7F2] hover:bg-[#F2F6EC] border border-[#E6E0D6] text-[#3E5514] transition cursor-pointer"
-            >
-              👑 স্কলার (মালিক)
-            </button>
-            <button
-              type="button"
-              onClick={() => setDemoCredentials('ps')}
-              className="px-3 py-1.5 rounded-full text-xs font-semibold bg-[#FAF7F2] hover:bg-[#FDF5ED] border border-[#E6E0D6] text-[#6E3A0D] transition cursor-pointer"
-            >
-              📋 পিএস / সহকারী
-            </button>
-          </div>
+        {/* Executive Platform Security Assurance */}
+        <div className="mt-6 pt-4 border-t border-[#F0EBE3] flex items-center justify-center gap-2 text-xs text-[#8A9893]">
+          <ShieldCheck size={14} className="text-[#3E5514]" />
+          <span>দ্বীনি কার্যক্রম ও ব্যক্তিগত শিডিউল সুরক্ষা প্ল্যাটফর্ম</span>
         </div>
 
       </div>
