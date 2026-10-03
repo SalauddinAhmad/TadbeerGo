@@ -32,6 +32,7 @@ import {
   ChevronDown,
   ShieldCheck
 } from 'lucide-react';
+import { MosqueCustomIllustration, RubElHizbIcon, MosqueIcon, QuranRehalIcon } from '../../components/icons/IslamicIcons';
 import { useAuth } from '../../context/AuthContext';
 import { api } from '../../api/client';
 import { toBengaliDigits } from '../../utils/bengali';
@@ -210,54 +211,127 @@ export const SettingsPage: React.FC = () => {
   return (
     <div className="pb-24 font-bengali">
       {/* =========================================================================
-          1. PREMIUM HERO PROFILE CARD
+          1. LUXURY CREATIVE EDITORIAL HERO PROFILE CARD
          ========================================================================= */}
-      <div className="relative rounded-3xl overflow-hidden bg-gradient-to-br from-[#063F35] via-[#042F28] to-[#021F1B] border border-[#00A878]/20 text-white p-6 sm:p-8 shadow-2xl mb-6">
-        {/* Decorative blurred orbs */}
-        <div className="absolute top-0 right-0 w-80 h-80 bg-emerald-500/10 rounded-full blur-3xl pointer-events-none" />
-        <div className="absolute bottom-0 left-1/3 w-48 h-48 bg-[#00A878]/10 rounded-full blur-2xl pointer-events-none" />
-        {/* Arabic Star watermark */}
-        <div className="absolute right-4 top-4 bottom-4 w-56 pointer-events-none opacity-[0.05]">
-          <svg viewBox="0 0 100 100" fill="currentColor" className="w-full h-full text-white">
-            <polygon points="50,0 61,35 97,35 68,57 79,91 50,70 21,91 32,57 3,35 39,35" />
-          </svg>
+      <div className="relative rounded-[32px] overflow-hidden bg-gradient-to-br from-[#1C2C0B] via-[#2A3E12] to-[#152309] border border-[#D2DEC1]/30 text-white p-6 sm:p-8 shadow-[0_20px_50px_-15px_rgba(28,44,11,0.4)] mb-6 font-bengali group">
+        
+        {/* Ambient Warm Golden & Emerald Radial Glows */}
+        <div className="absolute -top-20 -right-20 w-80 h-80 bg-[#D9822B]/20 rounded-full blur-3xl pointer-events-none" />
+        <div className="absolute -bottom-24 -left-20 w-80 h-80 bg-[#3E5514]/40 rounded-full blur-3xl pointer-events-none" />
+        
+        {/* Subtle Islamic Arabesque Geometric Watermark Mesh */}
+        <div className="absolute inset-0 pointer-events-none opacity-[0.04] bg-[radial-gradient(#FAF7F2_1px,transparent_1px)] [background-size:16px_16px]" />
+
+        {/* Custom Mosque Illustration Watermark */}
+        <div className="absolute right-0 bottom-0 pointer-events-none opacity-[0.14] translate-x-8 translate-y-6 select-none">
+          <MosqueCustomIllustration size={280} />
         </div>
 
-        <div className="relative z-10 flex flex-col sm:flex-row items-center sm:items-start gap-6">
-          {/* Portrait */}
+        <div className="relative z-10 flex flex-col md:flex-row items-center md:items-start gap-6">
+          {/* Creative Portrait Halo Medallion */}
           <div className="relative shrink-0">
-            <div className="w-24 h-24 sm:w-28 sm:h-28 rounded-2xl overflow-hidden ring-2 ring-[#00A878]/60 shadow-2xl bg-emerald-950">
-              <img src="/shaikh-portrait.jpg" alt="শায়খ মোখতার আহমাদ"
-                className="w-full h-full object-cover object-top hover:scale-105 transition duration-700" />
-            </div>
-            <div className="absolute -bottom-1.5 -right-1.5 w-7 h-7 rounded-full bg-[#00A878] text-white flex items-center justify-center border-2 border-[#063F35] shadow">
-              <CheckCircle2 size={15} strokeWidth={2.5} />
-            </div>
-          </div>
-
-          {/* Details */}
-          <div className="flex-1 text-center sm:text-left space-y-2">
-            <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-white/10 border border-white/15 text-[10px] font-semibold text-emerald-300 tracking-wide uppercase">
-              <Sparkles size={10} />
-              {isOwner ? 'Scholar · Full Control' : 'Personal Secretary'}
-            </span>
-            <h1 className="text-2xl sm:text-3xl font-extrabold text-white tracking-tight font-heading">{name}</h1>
-            <p className="text-sm text-emerald-200/80 font-medium">{title}</p>
-            <div className="flex flex-wrap justify-center sm:justify-start gap-x-4 gap-y-1 text-[11px] text-emerald-300/70 pt-1">
-              <span className="flex items-center gap-1"><MapPin size={11} className="text-[#00A878]" />{primaryLocation}</span>
-              <span className="flex items-center gap-1"><Phone size={11} className="text-[#00A878]" />{toBengaliDigits(phone)}</span>
-              <span className="flex items-center gap-1"><Mail size={11} className="text-[#00A878]" />{email}</span>
-            </div>
-          </div>
-
-          {/* Stat pills */}
-          <div className="hidden sm:flex flex-col gap-2 shrink-0">
-            {[['৩টি', 'সক্রিয় কোর্স'], ['১০০%', 'অটো-সিঙ্ক']].map(([v, l]) => (
-              <div key={l} className="bg-white/10 backdrop-blur border border-white/15 px-4 py-2.5 rounded-2xl text-center">
-                <div className="text-base font-black text-white">{v}</div>
-                <div className="text-[10px] text-emerald-200/70">{l}</div>
+            <div className="relative p-1 rounded-[28px] bg-gradient-to-tr from-[#6E3A0D] via-[#D9822B] to-[#FDF5ED] shadow-2xl">
+              <div className="w-28 h-28 sm:w-32 sm:h-32 rounded-[24px] overflow-hidden bg-[#1C2C0B] p-0.5">
+                <img
+                  src="/shaikh-portrait.jpg"
+                  alt="শায়খ মোখতার আহমাদ"
+                  className="w-full h-full object-cover object-top hover:scale-105 transition-transform duration-700 rounded-[22px]"
+                />
               </div>
-            ))}
+            </div>
+            {/* Verified Scholar Badge with Golden Rub El Hizb */}
+            <div
+              className="absolute -bottom-2 -right-2 w-9 h-9 rounded-full bg-[#6E3A0D] text-white flex items-center justify-center border-2 border-[#1C2C0B] shadow-lg ring-2 ring-[#D9822B]/40"
+              title="ভেরিফাইড ইসলামিক স্কলার"
+            >
+              <RubElHizbIcon size={15} className="text-[#FDF5ED]" />
+            </div>
+          </div>
+
+          {/* Details & Authoritative Typography */}
+          <div className="flex-1 text-center md:text-left space-y-2.5">
+            {/* Scholar Status Badge */}
+            <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-white/10 backdrop-blur-md border border-white/20 shadow-xs">
+              <span className="relative flex h-2 w-2">
+                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+                <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
+              </span>
+              <span className="text-[11px] font-bold text-white tracking-wide font-bengali">
+                {isOwner ? 'মূল স্কলার · পূর্ণ নিয়ন্ত্রণ' : 'ব্যক্তিগত সহকারী · PS অ্যাডমিন'}
+              </span>
+              <span className="text-white/30">·</span>
+              <span className="text-[10px] font-bold uppercase tracking-wider text-[#F5E6D3] flex items-center gap-1">
+                <ShieldCheck size={11} className="text-[#D9822B]" />
+                <span>TadbeerGo ভেরিফাইড</span>
+              </span>
+            </div>
+
+            {/* Scholar Name */}
+            <div>
+              <h1 className="text-2xl sm:text-3xl lg:text-4xl font-black text-white tracking-tight font-bengali drop-shadow-xs leading-tight">
+                {name}
+              </h1>
+              <p className="text-xs sm:text-sm text-[#E2EBD8]/90 font-medium mt-1 flex items-center justify-center md:justify-start gap-1.5">
+                <Sparkles size={13} className="text-[#D9822B] shrink-0" />
+                <span>{title}</span>
+              </p>
+            </div>
+
+            {/* Tactile Glass Contact Pills */}
+            <div className="flex flex-wrap justify-center md:justify-start gap-2 pt-1">
+              <div className="px-3 py-1.5 rounded-full bg-white/10 hover:bg-white/15 backdrop-blur-md border border-white/15 text-xs text-[#E8F0E4] flex items-center gap-1.5 transition">
+                <MapPin size={12} className="text-[#D9822B] shrink-0" />
+                <span className="font-medium">{primaryLocation}</span>
+              </div>
+              <a
+                href={`tel:${phone}`}
+                className="px-3 py-1.5 rounded-full bg-white/10 hover:bg-white/15 backdrop-blur-md border border-white/15 text-xs text-[#E8F0E4] flex items-center gap-1.5 transition cursor-pointer hover:border-[#D9822B]/50"
+              >
+                <Phone size={12} className="text-emerald-400 shrink-0" />
+                <span className="font-medium">{toBengaliDigits(phone)}</span>
+              </a>
+              <a
+                href={`mailto:${email}`}
+                className="px-3 py-1.5 rounded-full bg-white/10 hover:bg-white/15 backdrop-blur-md border border-white/15 text-xs text-[#E8F0E4] flex items-center gap-1.5 transition cursor-pointer hover:border-[#D9822B]/50"
+              >
+                <Mail size={12} className="text-sky-300 shrink-0" />
+                <span className="font-medium">{email}</span>
+              </a>
+            </div>
+          </div>
+
+          {/* Right Side Stats & Quick Action Pill */}
+          <div className="flex flex-col sm:flex-row md:flex-col items-center md:items-end justify-between gap-3 shrink-0 w-full md:w-auto pt-3 md:pt-0 border-t md:border-t-0 border-white/10">
+            <div className="flex items-center gap-2.5 w-full sm:w-auto justify-center">
+              {/* Stat 1: Courses */}
+              <div className="bg-white/10 backdrop-blur-md border border-white/15 px-3.5 py-2 rounded-2xl text-center min-w-[85px] shadow-xs">
+                <div className="flex items-center justify-center gap-1 text-[#F5E6D3] mb-0.5">
+                  <QuranRehalIcon size={13} />
+                  <span className="text-sm font-black text-white">৩টি</span>
+                </div>
+                <div className="text-[10px] font-semibold text-[#D2DEC1]">সক্রিয় কোর্স</div>
+              </div>
+
+              {/* Stat 2: Sync */}
+              <div className="bg-white/10 backdrop-blur-md border border-white/15 px-3.5 py-2 rounded-2xl text-center min-w-[85px] shadow-xs">
+                <div className="flex items-center justify-center gap-1 text-emerald-300 mb-0.5">
+                  <Sparkles size={12} />
+                  <span className="text-sm font-black text-white">১০০%</span>
+                </div>
+                <div className="text-[10px] font-semibold text-[#D2DEC1]">ক্লাউড সিঙ্ক</div>
+              </div>
+            </div>
+
+            {/* Quick Action Pill Button - Chocolate */}
+            <button
+              onClick={() => setActiveTab('profile')}
+              className="flex items-center space-x-2 pl-4 pr-2.5 py-1.5 bg-[#6E3A0D] hover:bg-[#854610] text-white text-xs font-bold rounded-full transition-all shadow-md cursor-pointer active:scale-95 border border-[#8A603E]"
+            >
+              <span>প্রোফাইল সম্পাদন</span>
+              <span className="w-5 h-5 rounded-full bg-[#8A603E] text-white flex items-center justify-center shrink-0">
+                <Edit3 size={11} strokeWidth={2.5} />
+              </span>
+            </button>
           </div>
         </div>
       </div>
@@ -279,8 +353,8 @@ export const SettingsPage: React.FC = () => {
           const active = activeTab === (tab.id as any);
           return (
             <button key={tab.id} onClick={() => setActiveTab(tab.id as any)}
-              className={`flex items-center gap-2 px-4 py-2.5 rounded-2xl text-xs font-bold shrink-0 cursor-pointer transition ${
-                active ? 'bg-[#063F35] text-white shadow-md' : 'bg-white border border-[#E4EBE8] text-[#17211F]/60'
+              className={`flex items-center gap-2 px-4 py-2.5 rounded-full text-xs font-bold shrink-0 cursor-pointer transition ${
+                active ? 'bg-[#3E5514] text-white shadow-md' : 'bg-white border border-[#E4EBE8] text-[#17211F]/60'
               }`}>
               <TIcon size={14} />
               <span>{tab.label}</span>
@@ -309,20 +383,20 @@ export const SettingsPage: React.FC = () => {
                 onClick={() => setActiveTab(tab.id as any)}
                 className={`group w-full flex items-center gap-3.5 px-4 py-3.5 rounded-2xl text-left transition-all duration-200 cursor-pointer ${
                   active
-                    ? 'bg-[#063F35] text-white shadow-lg shadow-emerald-900/20'
-                    : 'bg-white border border-[#E8EFEd] text-[#17211F]/70 hover:border-[#00A878]/30 hover:bg-[#F0FAF6] hover:text-[#063F35]'
+                    ? 'bg-[#3E5514] text-white shadow-lg shadow-[#3E5514]/20'
+                    : 'bg-white border border-[#E8EFEd] text-[#17211F]/70 hover:border-[#3E5514]/30 hover:bg-[#F2F6EC] hover:text-[#3E5514]'
                 }`}
               >
                 <div className={`w-9 h-9 rounded-xl flex items-center justify-center shrink-0 transition-all ${
-                  active ? 'bg-white/15' : 'bg-[#063F35]/8 group-hover:bg-[#00A878]/15'
+                  active ? 'bg-white/15' : 'bg-[#3E5514]/8 group-hover:bg-[#3E5514]/15'
                 }`}>
                   <TIcon size={17} strokeWidth={active ? 2.5 : 2} />
                 </div>
                 <div>
                   <p className={`text-xs font-bold leading-tight ${active ? 'text-white' : 'text-[#17211F]'}`}>{tab.label}</p>
-                  <p className={`text-[10px] leading-tight mt-0.5 ${active ? 'text-emerald-200/80' : 'text-[#17211F]/40'}`}>{tab.sub}</p>
+                  <p className={`text-[10px] leading-tight mt-0.5 ${active ? 'text-[#D2DEC1]' : 'text-[#17211F]/40'}`}>{tab.sub}</p>
                 </div>
-                {active && <div className="ml-auto w-1.5 h-1.5 rounded-full bg-[#00A878]" />}
+                {active && <div className="ml-auto w-1.5 h-1.5 rounded-full bg-[#D2DEC1]" />}
               </button>
             );
           })}
@@ -448,7 +522,7 @@ export const SettingsPage: React.FC = () => {
                 <select
                   value={jumuaReminderTime}
                   onChange={(e) => setJumuaReminderTime(e.target.value)}
-                  className="px-3 py-2 bg-white border border-[#E4EBE8] rounded-xl text-xs font-bold text-[#063F35] focus:outline-none focus:border-[#00A878] cursor-pointer"
+                  className="px-3 py-2 bg-white border border-[#E4EBE8] rounded-xl text-xs font-bold text-[#3E5514] focus:outline-none focus:border-[#3E5514] cursor-pointer"
                 >
                   <option value="24h">২৪ ঘণ্টা পূর্বে (বৃহস্পতিবার দুপুর)</option>
                   <option value="morning">শুক্রবার সকাল ৮:০০ টায়</option>
@@ -466,7 +540,7 @@ export const SettingsPage: React.FC = () => {
                 <select
                   value={travelBufferMins}
                   onChange={(e) => setTravelBufferMins(e.target.value)}
-                  className="px-3 py-2 bg-white border border-[#E4EBE8] rounded-xl text-xs font-bold text-[#063F35] focus:outline-none focus:border-[#00A878] cursor-pointer"
+                  className="px-3 py-2 bg-white border border-[#E4EBE8] rounded-xl text-xs font-bold text-[#3E5514] focus:outline-none focus:border-[#3E5514] cursor-pointer"
                 >
                   <option value="45">৪৫ মিনিট বাফার</option>
                   <option value="60">১ ঘণ্টা বাফার (প্রস্তাবিত)</option>
@@ -527,17 +601,17 @@ export const SettingsPage: React.FC = () => {
 
             <div className="space-y-4">
               {/* PS Account Info Card */}
-              <div className="p-4 rounded-2xl bg-[#E8F5F0]/60 border border-[#00A878]/20 flex items-center justify-between">
+              <div className="p-4 rounded-2xl bg-[#F2F6EC] border border-[#D2DEC1] flex items-center justify-between">
                 <div className="flex items-center gap-3">
-                  <div className="w-10 h-10 rounded-xl bg-[#063F35] text-white flex items-center justify-center font-bold text-xs">
+                  <div className="w-10 h-10 rounded-xl bg-[#3E5514] text-white flex items-center justify-center font-bold text-xs">
                     PS
                   </div>
                   <div>
                     <h4 className="text-xs font-bold text-[#17211F]">Personal Secretary (ব্যক্তিগত সহকারী)</h4>
-                    <p className="text-[11px] text-[#063F35] font-medium font-sans">ps@mokhterahmad.com</p>
+                    <p className="text-[11px] text-[#3E5514] font-medium font-sans">ps@mokhterahmad.com</p>
                   </div>
                 </div>
-                <span className="px-2.5 py-1 rounded-full text-[10px] font-bold bg-[#063F35] text-white shadow-2xs">
+                <span className="px-3 py-1 rounded-full text-[10px] font-bold bg-[#3E5514] text-white shadow-2xs">
                   সক্রিয় ডেলিগেশন
                 </span>
               </div>
@@ -562,7 +636,7 @@ export const SettingsPage: React.FC = () => {
               {/* Password & Security Section */}
               <div className="p-4 rounded-2xl bg-[#F7F9F7] border border-[#E4EBE8] space-y-3">
                 <h4 className="text-xs font-bold text-[#17211F] flex items-center gap-1.5">
-                  <Lock size={14} className="text-[#063F35]" />
+                  <Lock size={14} className="text-[#3E5514]" />
                   <span>অ্যাকাউন্ট নিরাপত্তা ও পাসওয়ার্ড</span>
                 </h4>
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-1">
@@ -604,7 +678,7 @@ export const SettingsPage: React.FC = () => {
                   type="button"
                   onClick={handleExportData}
                   disabled={isExporting}
-                  className="w-full py-2.5 bg-[#063F35] hover:bg-[#042F28] text-white rounded-xl text-xs font-bold transition flex items-center justify-center gap-2 cursor-pointer shadow-xs"
+                  className="w-full py-2.5 bg-[#3E5514] hover:bg-[#4D6819] text-white rounded-full text-xs font-bold transition flex items-center justify-center gap-2 cursor-pointer shadow-xs active:scale-95"
                 >
                   <Download size={14} />
                   <span>{isExporting ? 'ব্যাকআপ তৈরি হচ্ছে...' : 'ব্যাকআপ ডাউনলোড করুন'}</span>
@@ -612,7 +686,7 @@ export const SettingsPage: React.FC = () => {
               </div>
 
               <div className="p-5 rounded-2xl border border-[#E4EBE8] bg-[#F7F9F7] space-y-3">
-                <div className="w-10 h-10 rounded-xl bg-[#E8F5F0] text-[#00A878] flex items-center justify-center">
+                <div className="w-10 h-10 rounded-xl bg-[#F2F6EC] text-[#3E5514] flex items-center justify-center">
                   <Calendar size={20} />
                 </div>
                 <h4 className="text-xs font-bold text-[#17211F]">ক্যালেন্ডার সাবস্ক্রিপশন (iCal / Google)</h4>
@@ -622,7 +696,7 @@ export const SettingsPage: React.FC = () => {
                 <button
                   type="button"
                   onClick={() => alert('iCal সিঙ্ক লিঙ্ক আপনার ডিভাইসের ক্যালেন্ডার অ্যাপে যুক্ত করা হয়েছে।')}
-                  className="w-full py-2.5 bg-white border border-[#E4EBE8] hover:bg-[#E8F5F0] text-[#063F35] rounded-xl text-xs font-bold transition flex items-center justify-center gap-2 cursor-pointer shadow-2xs"
+                  className="w-full py-2.5 bg-white border border-[#E4EBE8] hover:bg-[#F2F6EC] text-[#3E5514] rounded-full text-xs font-bold transition flex items-center justify-center gap-2 cursor-pointer shadow-2xs active:scale-95"
                 >
                   <Globe size={14} />
                   <span>ক্যালেন্ডার লিঙ্ক কপি করুন</span>
@@ -637,9 +711,9 @@ export const SettingsPage: React.FC = () => {
            ========================================================================= */}
         {activeTab !== 'team' && (
           <div className="flex items-center justify-between p-4 rounded-2xl bg-white border border-[#E4EBE8] shadow-sm">
-            <div className="flex items-center gap-2 text-xs text-[#063F35] font-semibold">
+            <div className="flex items-center gap-2 text-xs text-[#3E5514] font-semibold">
               {savedSuccess ? (
-                <span className="flex items-center gap-1.5 text-[#00A878]">
+                <span className="flex items-center gap-1.5 text-[#3E5514]">
                   <Check size={16} className="stroke-[3]" />
                   <span>শায়খের সকল সেটিংস সফলভাবে সংরক্ষিত হয়েছে!</span>
                 </span>
@@ -650,7 +724,7 @@ export const SettingsPage: React.FC = () => {
 
             <button
               type="submit"
-              className="px-6 py-2.5 bg-[#063F35] hover:bg-[#042F28] text-white rounded-xl text-xs font-bold transition flex items-center gap-2 shadow-xs cursor-pointer active:scale-98"
+              className="px-6 py-2.5 bg-[#3E5514] hover:bg-[#4D6819] text-white rounded-full text-xs font-bold transition flex items-center gap-2 shadow-xs cursor-pointer active:scale-98"
             >
               <Save size={14} />
               <span>সেটিংস সংরক্ষণ করুন</span>
@@ -668,14 +742,14 @@ export const SettingsPage: React.FC = () => {
           <div className="flex items-center justify-between">
             <div>
               <h2 className="text-base font-bold text-[#17211F] flex items-center gap-2">
-                <Users size={17} className="text-[#063F35]" />
+                <Users size={17} className="text-[#3E5514]" />
                 টিম ম্যানেজমেন্ট
               </h2>
               <p className="text-xs text-[#17211F]/50 mt-0.5">অ্যাডমিন, সম্পাদক ও পিএস — যুক্ত করুন, এডিট করুন এবং পারমিশন নিয়ন্ত্রণ করুন।</p>
             </div>
             <button
               onClick={openAddModal}
-              className="flex items-center gap-2 px-4 py-2.5 bg-[#063F35] hover:bg-[#042F28] text-white rounded-xl text-xs font-bold transition cursor-pointer shadow-xs"
+              className="flex items-center gap-2 px-5 py-2.5 bg-[#3E5514] hover:bg-[#4D6819] text-white rounded-full text-xs font-bold transition cursor-pointer shadow-xs active:scale-95"
             >
               <UserPlus size={14} />
               <span>নতুন সদস্য যুক্ত করুন</span>
@@ -750,7 +824,7 @@ export const SettingsPage: React.FC = () => {
                   return (
                     <div key={m.id} className="flex items-center gap-4 px-5 py-4 hover:bg-[#F9FCFB] transition">
                       {/* Avatar */}
-                      <div className="relative w-10 h-10 rounded-full bg-[#063F35] text-white flex items-center justify-center font-bold text-xs shrink-0 shadow-sm overflow-hidden">
+                      <div className="relative w-10 h-10 rounded-full bg-[#3E5514] text-white flex items-center justify-center font-bold text-xs shrink-0 shadow-sm overflow-hidden">
                         {m.avatar_url ? (
                           <img src={m.avatar_url} alt={m.name} className="w-full h-full object-cover object-top" />
                         ) : (
@@ -785,7 +859,7 @@ export const SettingsPage: React.FC = () => {
                       <div className="flex items-center gap-1 shrink-0">
                         <button
                           onClick={() => openEditModal(m)}
-                          className="p-2 rounded-xl text-[#063F35] hover:bg-[#E8F5F0] transition cursor-pointer"
+                          className="p-2 rounded-xl text-[#3E5514] hover:bg-[#F2F6EC] transition cursor-pointer"
                           title="এডিট করুন"
                         >
                           <Edit3 size={14} />
@@ -811,7 +885,7 @@ export const SettingsPage: React.FC = () => {
           <div className="bg-white rounded-3xl border border-[#E4EBE8] shadow-xs overflow-hidden">
             <div className="px-5 py-4 border-b border-[#F0F4F2]">
               <h3 className="text-sm font-bold text-[#17211F] flex items-center gap-2">
-                <ShieldCheck size={15} className="text-[#063F35]" />
+                <ShieldCheck size={15} className="text-[#3E5514]" />
                 পারমিশন রেফারেন্স
               </h3>
             </div>
@@ -992,7 +1066,7 @@ export const SettingsPage: React.FC = () => {
               <button
                 onClick={handleTeamSave}
                 disabled={fSaving || !fName || !fEmail}
-                className="flex items-center gap-2 px-5 py-2.5 bg-[#063F35] hover:bg-[#042F28] disabled:opacity-50 text-white rounded-xl text-xs font-bold transition cursor-pointer shadow-xs"
+                className="flex items-center gap-2 px-6 py-2.5 bg-[#3E5514] hover:bg-[#4D6819] disabled:opacity-50 text-white rounded-full text-xs font-bold transition cursor-pointer shadow-xs active:scale-95"
               >
                 {fSaving ? (
                   <div className="w-3.5 h-3.5 border-2 border-white border-t-transparent rounded-full animate-spin" />

@@ -144,7 +144,7 @@ export const PwaInstallModal: React.FC<PwaInstallModalProps> = ({ isOpen, onClos
               {permission !== 'granted' ? (
                 <button
                   onClick={handleEnableNotifications}
-                  className="px-4 py-2.5 bg-[#063F35] hover:bg-[#042F28] text-white rounded-xl font-bold flex items-center gap-2 transition cursor-pointer shadow-xs"
+                  className="px-5 py-2.5 bg-[#3E5514] hover:bg-[#4D6819] text-white rounded-full font-bold flex items-center gap-2 transition cursor-pointer shadow-xs active:scale-95"
                 >
                   <Bell size={14} className="text-[#00A878]" />
                   <span>নোটিফিকেশন চালু করুন</span>
@@ -166,12 +166,12 @@ export const PwaInstallModal: React.FC<PwaInstallModalProps> = ({ isOpen, onClos
           <div className="p-4 rounded-2xl border border-[#E4EBE8] bg-white space-y-3.5">
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-2 font-bold text-sm text-[#17211F]">
-                <Smartphone size={16} className="text-[#063F35]" />
+                <Smartphone size={16} className="text-[#3E5514]" />
                 <span>মোবাইল হোমস্ক্রিনে ইনস্টল</span>
               </div>
               {isInstalled && (
-                <span className="text-[10px] font-bold px-2 py-0.5 rounded-md bg-[#E8F5F0] text-[#063F35] flex items-center gap-1 border border-[#00A878]/20">
-                  <CheckCircle2 size={11} className="text-[#00A878]" /> ইনস্টল করা আছে
+                <span className="text-[10px] font-bold px-3 py-1 rounded-full bg-[#F2F6EC] text-[#3E5514] flex items-center gap-1 border border-[#D2DEC1]">
+                  <CheckCircle2 size={11} className="text-[#3E5514]" /> ইনস্টল করা আছে
                 </span>
               )}
             </div>
@@ -187,23 +187,23 @@ export const PwaInstallModal: React.FC<PwaInstallModalProps> = ({ isOpen, onClos
                 <p className="font-bold text-[#17211F] text-xs">আইফোনে (iOS Safari) ইনস্টল করার নিয়ম:</p>
                 <ol className="space-y-2 text-[#17211F]/80 list-none pl-0">
                   <li className="flex items-start gap-2">
-                    <span className="w-5 h-5 rounded-full bg-[#063F35] text-white flex items-center justify-center font-bold text-[10px] shrink-0 mt-0.5">
+                    <span className="w-5 h-5 rounded-full bg-[#3E5514] text-white flex items-center justify-center font-bold text-[10px] shrink-0 mt-0.5">
                       ১
                     </span>
                     <span>
-                      সাফারি ব্রাউজারের নিচে থাকা <strong>Share (<Share2 size={12} className="inline mx-0.5 text-[#063F35]" />)</strong> বাটনে চাপ দিন।
+                      সাফারি ব্রাউজারের নিচে থাকা <strong>Share (<Share2 size={12} className="inline mx-0.5 text-[#3E5514]" />)</strong> বাটনে চাপ দিন।
                     </span>
                   </li>
                   <li className="flex items-start gap-2">
-                    <span className="w-5 h-5 rounded-full bg-[#063F35] text-white flex items-center justify-center font-bold text-[10px] shrink-0 mt-0.5">
+                    <span className="w-5 h-5 rounded-full bg-[#3E5514] text-white flex items-center justify-center font-bold text-[10px] shrink-0 mt-0.5">
                       ২
                     </span>
                     <span>
-                      একটু নিচে স্ক্রল করে <strong>'Add to Home Screen' (<PlusSquare size={12} className="inline mx-0.5 text-[#063F35]" />)</strong> অপশনে চাপ দিন।
+                      একটু নিচে স্ক্রল করে <strong>'Add to Home Screen' (<PlusSquare size={12} className="inline mx-0.5 text-[#3E5514]" />)</strong> অপশনে চাপ দিন।
                     </span>
                   </li>
                   <li className="flex items-start gap-2">
-                    <span className="w-5 h-5 rounded-full bg-[#063F35] text-white flex items-center justify-center font-bold text-[10px] shrink-0 mt-0.5">
+                    <span className="w-5 h-5 rounded-full bg-[#3E5514] text-white flex items-center justify-center font-bold text-[10px] shrink-0 mt-0.5">
                       ৩
                     </span>
                     <span>
@@ -220,7 +220,7 @@ export const PwaInstallModal: React.FC<PwaInstallModalProps> = ({ isOpen, onClos
                 </p>
                 <button
                   onClick={handleInstallClick}
-                  className="w-full py-3 bg-[#063F35] hover:bg-[#042F28] text-white rounded-xl font-bold flex items-center justify-center gap-2 shadow-xs transition cursor-pointer text-xs"
+                  className="w-full py-3 bg-[#3E5514] hover:bg-[#4D6819] text-white rounded-full font-bold flex items-center justify-center gap-2 shadow-xs transition cursor-pointer text-xs active:scale-95"
                 >
                   <Download size={15} className="text-[#00A878]" />
                   <span>ফোনে অ্যাপ ইনস্টল করুন</span>

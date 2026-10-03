@@ -11,7 +11,7 @@ import {
   Check,
   X
 } from 'lucide-react';
-import { MosqueIcon } from '../../components/icons/IslamicIcons';
+import { MosqueIcon, MosqueCustomIllustration } from '../../components/icons/IslamicIcons';
 import { Contact, Mosque } from '../../types';
 import { api } from '../../api/client';
 import { toBengaliDigits } from '../../utils/bengali';
@@ -130,12 +130,12 @@ export const ContactsPage: React.FC = () => {
       {/* 1. Header & Switcher Bar */}
       <div className="p-5 sm:p-6 rounded-2xl bg-white border border-[#E4EBE8] flex flex-col sm:flex-row sm:items-center justify-between gap-4 shadow-xs">
         <div className="flex items-center space-x-3">
-          <div className="flex rounded-2xl bg-[#F7F9F7] p-1.5 border border-[#E4EBE8]">
+          <div className="flex rounded-full bg-[#F7F9F7] p-1.5 border border-[#E4EBE8]">
             <button
               onClick={() => setActiveTab('contacts')}
-              className={`flex items-center space-x-2 px-4 py-2 rounded-xl text-xs font-bold transition cursor-pointer ${
+              className={`flex items-center space-x-2 px-4 py-2 rounded-full text-xs font-bold transition cursor-pointer ${
                 activeTab === 'contacts'
-                  ? 'bg-[#063F35] text-white shadow-xs'
+                  ? 'bg-[#3E5514] text-white shadow-xs'
                   : 'text-[#17211F]/70 hover:text-[#17211F]'
               }`}
             >
@@ -144,13 +144,13 @@ export const ContactsPage: React.FC = () => {
             </button>
             <button
               onClick={() => setActiveTab('mosques')}
-              className={`flex items-center space-x-2 px-4 py-2 rounded-xl text-xs font-bold transition cursor-pointer ${
+              className={`flex items-center space-x-2 px-4 py-2 rounded-full text-xs font-bold transition cursor-pointer ${
                 activeTab === 'mosques'
-                  ? 'bg-[#063F35] text-white shadow-xs'
+                  ? 'bg-[#3E5514] text-white shadow-xs'
                   : 'text-[#17211F]/70 hover:text-[#17211F]'
               }`}
             >
-              <MosqueIcon size={15} className={activeTab === 'mosques' ? 'text-white' : 'text-[#063F35]'} />
+              <MosqueIcon size={15} className={activeTab === 'mosques' ? 'text-white' : 'text-[#3E5514]'} />
               <span>মসজিদ ও কমপ্লেক্স ({toBengaliDigits(mosques.length)})</span>
             </button>
           </div>
@@ -165,7 +165,7 @@ export const ContactsPage: React.FC = () => {
               placeholder={activeTab === 'contacts' ? 'নাম, পদবী বা প্রতিষ্ঠান খুঁজুন...' : 'মসজিদের নাম, এলাকা খুঁজুন...'}
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              className="w-full pl-9 pr-8 py-2 text-xs bg-[#F7F9F7] border border-[#E4EBE8] rounded-xl focus:bg-white focus:outline-hidden focus:ring-2 focus:ring-[#00A878] font-medium text-[#17211F] placeholder:text-[#17211F]/50 transition"
+              className="w-full pl-9 pr-8 py-2 text-xs bg-[#F7F9F7] border border-[#E4EBE8] rounded-full focus:bg-white focus:outline-hidden focus:ring-2 focus:ring-[#3E5514] font-medium text-[#17211F] placeholder:text-[#17211F]/50 transition"
             />
             {searchQuery && (
               <button
@@ -181,18 +181,22 @@ export const ContactsPage: React.FC = () => {
           {activeTab === 'contacts' ? (
             <button
               onClick={() => setIsAddContactOpen(true)}
-              className="flex items-center space-x-1.5 px-4 py-2 bg-[#063F35] hover:bg-[#042F28] text-white text-xs font-bold rounded-xl transition shadow-xs shrink-0 cursor-pointer"
+              className="flex items-center space-x-2 pl-4 pr-2.5 py-1.5 bg-[#6E3A0D] hover:bg-[#854610] text-white text-xs font-bold rounded-full transition shadow-xs shrink-0 cursor-pointer active:scale-95"
             >
-              <Plus size={15} />
-              <span>+ নতুন পরিচিতি</span>
+              <span>নতুন পরিচিতি</span>
+              <span className="w-5 h-5 rounded-full bg-[#8A603E] text-white flex items-center justify-center shrink-0">
+                <Plus size={11} strokeWidth={2.5} />
+              </span>
             </button>
           ) : (
             <button
               onClick={() => setIsAddMosqueOpen(true)}
-              className="flex items-center space-x-1.5 px-4 py-2 bg-[#063F35] hover:bg-[#042F28] text-white text-xs font-bold rounded-xl transition shadow-xs shrink-0 cursor-pointer"
+              className="flex items-center space-x-2 pl-4 pr-2.5 py-1.5 bg-[#6E3A0D] hover:bg-[#854610] text-white text-xs font-bold rounded-full transition shadow-xs shrink-0 cursor-pointer active:scale-95"
             >
-              <Plus size={15} />
-              <span>+ নতুন মসজিদ</span>
+              <span>নতুন মসজিদ</span>
+              <span className="w-5 h-5 rounded-full bg-[#8A603E] text-white flex items-center justify-center shrink-0">
+                <Plus size={11} strokeWidth={2.5} />
+              </span>
             </button>
           )}
         </div>
@@ -217,7 +221,7 @@ export const ContactsPage: React.FC = () => {
                 className="p-5 rounded-2xl border border-[#E4EBE8] hover:border-[#00A878]/40 hover:shadow-md transition bg-white space-y-4"
               >
                 <div className="flex items-start space-x-3.5">
-                  <div className="w-11 h-11 rounded-2xl bg-[#E8F5F0] text-[#063F35] flex items-center justify-center font-bold text-sm tracking-wider shrink-0 border border-[#00A878]/20 shadow-2xs">
+                  <div className="w-11 h-11 rounded-2xl bg-[#F2F6EC] text-[#3E5514] flex items-center justify-center font-bold text-sm tracking-wider shrink-0 border border-[#D2DEC1] shadow-2xs">
                     {initials || 'মা'}
                   </div>
                   <div className="flex-1 min-w-0">
@@ -234,32 +238,32 @@ export const ContactsPage: React.FC = () => {
                   {c.phone && (
                     <div className="flex items-center justify-between">
                       <span className="flex items-center gap-2 text-[#17211F] font-medium">
-                        <Phone size={13} className="text-[#063F35]" />
+                        <Phone size={13} className="text-[#3E5514]" />
                         {toBengaliDigits(c.phone)}
                       </span>
                       <button
                         onClick={() => handleCopyPhone(c.phone!)}
-                        className="text-[10px] text-[#17211F]/60 hover:text-[#063F35] transition cursor-pointer"
+                        className="text-[10px] text-[#17211F]/60 hover:text-[#3E5514] transition cursor-pointer"
                         title="নম্বর কপি করুন"
                       >
-                        {copiedPhone === c.phone ? <Check size={12} className="text-[#00A878]" /> : <Copy size={12} />}
+                        {copiedPhone === c.phone ? <Check size={12} className="text-[#3E5514]" /> : <Copy size={12} />}
                       </button>
                     </div>
                   )}
                   {c.whatsapp && (
                     <div className="flex items-center gap-2 text-[#17211F] font-medium">
-                      <MessageSquare size={13} className="text-[#00A878]" />
+                      <MessageSquare size={13} className="text-[#3E5514]" />
                       <span>হোয়াটসঅ্যাপ: {toBengaliDigits(c.whatsapp)}</span>
                     </div>
                   )}
                   {c.address && (
                     <div className="flex items-start gap-2 text-[#17211F]/80 pt-1 border-t border-[#E4EBE8]/60">
-                      <MapPin size={13} className="text-[#00A878] shrink-0 mt-0.5" />
+                      <MapPin size={13} className="text-[#6E3A0D] shrink-0 mt-0.5" />
                       <span className="truncate">{c.address}</span>
                     </div>
                   )}
                   {c.notes && (
-                    <p className="text-[10px] text-[#063F35] bg-[#E8F5F0]/70 px-2 py-1 rounded-md border border-[#00A878]/20 truncate">
+                    <p className="text-[10px] text-[#3E5514] bg-[#F2F6EC] px-2 py-1 rounded-md border border-[#D2DEC1] truncate">
                       {c.notes}
                     </p>
                   )}
@@ -270,7 +274,7 @@ export const ContactsPage: React.FC = () => {
                   {c.phone && (
                     <a
                       href={`tel:${c.phone}`}
-                      className="flex-1 py-2 bg-[#F7F9F7] hover:bg-[#E8F5F0] text-[#063F35] border border-[#E4EBE8] rounded-xl text-xs font-bold text-center transition flex items-center justify-center gap-1.5"
+                      className="flex-1 py-2 bg-[#F2F6EC] hover:bg-[#E3EBD7] text-[#3E5514] border border-[#D2DEC1] rounded-full text-xs font-bold text-center transition flex items-center justify-center gap-1.5"
                     >
                       <Phone size={12} /> কল
                     </a>
@@ -280,7 +284,7 @@ export const ContactsPage: React.FC = () => {
                       href={`https://wa.me/${waNumber}?text=Assalamu%20Alaikum%20wa%20Rahmatullah`}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="flex-1 py-2 bg-[#063F35] hover:bg-[#042F28] text-white rounded-xl text-xs font-bold text-center transition flex items-center justify-center gap-1.5 shadow-2xs"
+                      className="flex-1 py-2 bg-[#3E5514] hover:bg-[#4D6819] text-white rounded-full text-xs font-bold text-center transition flex items-center justify-center gap-1.5 shadow-2xs"
                     >
                       <MessageSquare size={12} /> হোয়াটসঅ্যাপ
                     </a>
@@ -290,10 +294,10 @@ export const ContactsPage: React.FC = () => {
                       href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(c.address + (c.address.includes('ঢাকা') ? '' : ' ঢাকা'))}`}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="p-2 bg-[#F7F9F7] hover:bg-[#E8F5F0] text-[#063F35] border border-[#E4EBE8] rounded-xl text-xs font-bold transition flex items-center justify-center shrink-0 shadow-2xs"
+                      className="p-2 bg-[#FDF5ED] hover:bg-[#F8E8DA] text-[#6E3A0D] border border-[#EAD7C7] rounded-full text-xs font-bold transition flex items-center justify-center shrink-0 shadow-2xs"
                       title="গুগল ম্যাপসে অবস্থান দেখুন"
                     >
-                      <Compass size={14} className="text-[#00A878]" />
+                      <Compass size={14} className="text-[#6E3A0D]" />
                     </a>
                   )}
                 </div>
@@ -318,33 +322,33 @@ export const ContactsPage: React.FC = () => {
                 className="p-5 rounded-2xl border border-[#E4EBE8] hover:border-[#00A878]/40 hover:shadow-md transition bg-white space-y-4"
               >
                 <div className="flex items-start space-x-3.5">
-                  <div className="w-11 h-11 rounded-2xl bg-[#063F35] text-white flex items-center justify-center shrink-0 border border-[#00A878]/30 shadow-xs">
-                    <MosqueIcon size={20} />
+                  <div className="w-12 h-12 rounded-2xl bg-[#FDF5ED] border border-[#EAD7C7] flex items-center justify-center shrink-0 shadow-xs p-1">
+                    <MosqueCustomIllustration size={34} />
                   </div>
                   <div className="flex-1 min-w-0">
                     <h3 className="text-sm font-bold text-[#17211F] truncate">
                       {m.name}
                     </h3>
-                    <p className="text-xs text-[#063F35] font-semibold truncate mt-0.5">
+                    <p className="text-xs text-[#6E3A0D] font-semibold truncate mt-0.5">
                       {m.district || 'ঢাকা'} এলাকা
                     </p>
                   </div>
                 </div>
 
-                <div className="space-y-2 text-xs text-[#17211F]/70 bg-[#E8F5F0]/40 p-3 rounded-xl border border-[#00A878]/15">
+                <div className="space-y-2 text-xs text-[#17211F]/70 bg-[#F2F6EC]/60 p-3 rounded-xl border border-[#D2DEC1]">
                   <p className="flex items-start gap-2">
-                    <MapPin size={13} className="text-[#063F35] shrink-0 mt-0.5" />
+                    <MapPin size={13} className="text-[#3E5514] shrink-0 mt-0.5" />
                     <span className="line-clamp-2">{m.address || 'ঠিকানা সংরক্ষিত নেই'}</span>
                   </p>
                   {m.contact_person && (
                     <p className="flex items-center gap-2 pt-1 border-t border-[#E4EBE8] text-[#17211F]">
-                      <Users size={13} className="text-[#063F35] shrink-0" />
+                      <Users size={13} className="text-[#3E5514] shrink-0" />
                       <span>মুতাওয়াল্লী / সভাপতি: <strong className="text-[#17211F]">{m.contact_person}</strong></span>
                     </p>
                   )}
                   {m.phone && (
                     <p className="flex items-center gap-2 text-[#17211F]">
-                      <Phone size={13} className="text-[#063F35] shrink-0" />
+                      <Phone size={13} className="text-[#3E5514] shrink-0" />
                       <span>{toBengaliDigits(m.phone)}</span>
                     </p>
                   )}
@@ -356,14 +360,14 @@ export const ContactsPage: React.FC = () => {
                     href={`https://www.google.com/maps/search/?api=1&query=${mapQuery}`}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="flex-1 py-2 bg-[#F7F9F7] hover:bg-[#E8F5F0] text-[#063F35] border border-[#E4EBE8] rounded-xl text-xs font-bold text-center transition flex items-center justify-center gap-1.5"
+                    className="flex-1 py-2 bg-[#F2F6EC] hover:bg-[#E3EBD7] text-[#3E5514] border border-[#D2DEC1] rounded-full text-xs font-bold text-center transition flex items-center justify-center gap-1.5"
                   >
                     <Compass size={12} /> গুগল ম্যাপস
                   </a>
                   {m.phone && (
                     <a
                       href={`tel:${m.phone}`}
-                      className="py-2 px-4 bg-[#063F35] hover:bg-[#042F28] text-white rounded-xl text-xs font-bold text-center transition flex items-center justify-center gap-1.5 shadow-2xs"
+                      className="py-2 px-5 bg-[#3E5514] hover:bg-[#4D6819] text-white rounded-full text-xs font-bold text-center transition flex items-center justify-center gap-1.5 shadow-2xs"
                     >
                       <Phone size={12} /> কল
                     </a>
@@ -392,7 +396,7 @@ export const ContactsPage: React.FC = () => {
           >
             <div className="flex items-center justify-between border-b border-[#E4EBE8] pb-3">
               <div className="flex items-center gap-2.5">
-                <div className="w-8 h-8 rounded-lg bg-[#063F35] text-white flex items-center justify-center">
+                <div className="w-8 h-8 rounded-lg bg-[#3E5514] text-white flex items-center justify-center">
                   <Users size={18} />
                 </div>
                 <div>
@@ -516,7 +520,7 @@ export const ContactsPage: React.FC = () => {
               <button
                 type="submit"
                 disabled={isSubmittingContact}
-                className="px-5 py-2.5 text-xs font-bold text-white bg-[#063F35] hover:bg-[#042F28] rounded-xl cursor-pointer shadow-xs transition"
+                className="px-6 py-2.5 text-xs font-bold text-white bg-[#6E3A0D] hover:bg-[#854610] rounded-full cursor-pointer shadow-xs transition active:scale-95"
               >
                 {isSubmittingContact ? 'সংরক্ষণ করা হচ্ছে...' : 'পরিচিতি সংরক্ষণ করুন'}
               </button>
@@ -536,7 +540,7 @@ export const ContactsPage: React.FC = () => {
           >
             <div className="flex items-center justify-between border-b border-[#E4EBE8] pb-3">
               <div className="flex items-center gap-2.5">
-                <div className="w-8 h-8 rounded-lg bg-[#063F35] text-white flex items-center justify-center">
+                <div className="w-8 h-8 rounded-lg bg-[#3E5514] text-white flex items-center justify-center">
                   <MosqueIcon size={18} />
                 </div>
                 <div>
@@ -634,7 +638,7 @@ export const ContactsPage: React.FC = () => {
               <button
                 type="submit"
                 disabled={isSubmittingMosque}
-                className="px-5 py-2.5 text-xs font-bold text-white bg-[#063F35] hover:bg-[#042F28] rounded-xl cursor-pointer shadow-xs transition"
+                className="px-6 py-2.5 text-xs font-bold text-white bg-[#6E3A0D] hover:bg-[#854610] rounded-full cursor-pointer shadow-xs transition active:scale-95"
               >
                 {isSubmittingMosque ? 'সংরক্ষণ করা হচ্ছে...' : 'মসজিদ সংরক্ষণ করুন'}
               </button>

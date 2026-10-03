@@ -45,8 +45,8 @@ export const TadbeerLogo: React.FC<TadbeerLogoProps> = ({
       {showText && (
         <div>
           <div className="flex items-center gap-1.5">
-            <span className="text-base font-black font-sans tracking-tight text-[#063F35]">
-              Tadbeer<span className="text-[#00A878]">Go</span>
+            <span className="text-base font-black font-sans tracking-tight text-[#3E5514]">
+              Tadbeer<span className="text-[#6E3A0D]">Go</span>
             </span>
           </div>
           {showSubtitle && (

@@ -18,30 +18,39 @@
 }
 
 @theme {
-  --font-sans: 'Plus Jakarta Sans', 'Inter', 'Bornomala', -apple-system, BlinkMacSystemFont, sans-serif;
-  --font-heading: 'Plus Jakarta Sans', 'Inter', 'Bornomala', -apple-system, BlinkMacSystemFont, sans-serif;
-  --font-mono: 'Plus Jakarta Sans', 'Poppins', ui-monospace, SFMono-Regular, Menlo, monospace;
+  --font-sans: 'Plus Jakarta Sans', 'Bornomala', 'Noto Sans Bengali', -apple-system, BlinkMacSystemFont, sans-serif;
+  --font-heading: 'Plus Jakarta Sans', 'Bornomala', 'Noto Sans Bengali', -apple-system, BlinkMacSystemFont, sans-serif;
+  --font-bengali: 'Bornomala', 'Plus Jakarta Sans', sans-serif;
+  --font-mono: 'Plus Jakarta Sans', ui-monospace, SFMono-Regular, Menlo, monospace;
+}
+
+.font-bengali {
+  font-family: 'Bornomala', 'Plus Jakarta Sans', sans-serif !important;
 }
 
 @layer base {
   :root {
-    --bg-main: #F7F9F7;
+    --bg-main: #F4EFEB;
     --bg-card: #FFFFFF;
-    --text-primary: #17211F;
-    --text-secondary: #6F7D78;
-    --text-muted: #9AA6A2;
-    --brand-primary: #063F35;
-    --brand-dark: #042F28;
-    --brand-accent: #00A878;
-    --brand-soft: #E8F5F0;
-    --border-subtle: #E4EBE8;
-    --color-success: #00A878;
-    --color-warning: #E8A317;
-    --color-error: #D9534F;
-    --color-info: #3978D6;
-    --shadow-card: 0 2px 10px -2px rgba(6, 63, 53, 0.04), 0 1px 2px rgba(0, 0, 0, 0.02);
-    --shadow-card-hover: 0 8px 24px -4px rgba(6, 63, 53, 0.07);
-    --radius-card: 1.125rem;
+    --bg-card-subtle: #FAF7F2;
+    --text-primary: #16221E;
+    --text-secondary: #586661;
+    --text-muted: #8A9893;
+    --brand-primary: #3E5514;
+    --brand-dark: #2D3F0E;
+    --brand-accent: #6E3A0D;
+    --brand-soft: #F2F6EC;
+    --brand-warm: #E28743;
+    --brand-brown: #6E3A0D;
+    --border-subtle: #E6E0D6;
+    --border-card: #ECE6DC;
+    --color-success: #3E5514;
+    --color-warning: #D97706;
+    --color-error: #DC2626;
+    --color-info: #2563EB;
+    --shadow-card: 0 4px 20px -2px rgba(22, 34, 30, 0.04), 0 1px 3px rgba(0, 0, 0, 0.02);
+    --shadow-card-hover: 0 12px 30px -4px rgba(22, 34, 30, 0.08);
+    --radius-card: 1.625rem;
   }
 
   *, *::before, *::after {
@@ -49,7 +58,7 @@
   }
 
   body {
-    background: #F7F9F7;
+    background: #F4EFEB;
     color: var(--text-primary);
     font-family: var(--font-sans);
     -webkit-font-smoothing: antialiased;
@@ -57,8 +66,8 @@
     -webkit-tap-highlight-color: transparent;
     min-height: 100vh;
     letter-spacing: -0.01em;
-    font-size: 14px;
-    line-height: 1.55;
+    font-size: 14.5px;
+    line-height: 1.6;
     touch-action: manipulation;
     overscroll-behavior: none;
   }
@@ -91,58 +100,62 @@
    CARD & GLASS SYSTEM
    ============================================================ */
 
-.pro-card {
+.pro-card, .bento-card {
   background: var(--bg-card);
-  backdrop-filter: blur(24px);
-  -webkit-backdrop-filter: blur(24px);
-  border: 1px solid rgba(210, 225, 215, 0.80);
+  border: 1px solid var(--border-card);
   border-radius: var(--radius-card);
   box-shadow: var(--shadow-card);
 }
 
-.pro-card-hover {
-  transition: transform 0.22s cubic-bezier(0.16, 1, 0.3, 1),
-              box-shadow 0.22s cubic-bezier(0.16, 1, 0.3, 1),
-              border-color 0.22s ease;
-}
-.pro-card-hover:hover {
-  transform: translateY(-1px);
-  box-shadow: var(--shadow-card-hover);
-  border-color: rgba(45, 106, 79, 0.22);
-}
-
-/* Deep-green frosted hero banner */
-.glass-banner {
-  background: linear-gradient(150deg, #0c2218 0%, #143424 50%, #1e4d35 100%);
-  border-radius: 1.75rem;
+.bento-card-dark {
+  background: #0E291F;
+  color: #FFFFFF;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: var(--radius-card);
+  box-shadow: 0 10px 30px -5px rgba(10, 30, 22, 0.25);
   position: relative;
   overflow: hidden;
-  box-shadow: 0 20px 60px -15px rgba(12, 34, 24, 0.5);
 }
 
-/* Frosted pill — on dark glass surfaces */
-.frosted-pill {
-  background: rgba(255, 255, 255, 0.10);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
-  border: 1px solid rgba(255, 255, 255, 0.18);
-  color: #ffffff;
-  transition: background 0.15s ease;
+.pro-card-hover, .bento-card-hover {
+  transition: transform 0.2s cubic-bezier(0.16, 1, 0.3, 1),
+              box-shadow 0.2s cubic-bezier(0.16, 1, 0.3, 1),
+              border-color 0.2s ease;
 }
-.frosted-pill:hover {
-  background: rgba(255, 255, 255, 0.20);
+.pro-card-hover:hover, .bento-card-hover:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-card-hover);
+  border-color: #D6CEC2;
 }
 
-/* Active pill variants */
-.pill-active-orange {
-  background: #063F35;
-  color: #ffffff;
-  box-shadow: 0 4px 14px -3px rgba(6, 63, 53, 0.40);
+/* Tactile Pill Buttons & Controls */
+.bento-pill-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.375rem;
+  padding: 0.45rem 0.9rem;
+  border-radius: 9999px;
+  font-size: 0.8125rem;
+  font-weight: 600;
+  transition: all 0.15s ease;
 }
-.pill-active-emerald {
-  background: linear-gradient(135deg, #0c2218 0%, #163829 100%);
-  color: #ffffff;
-  box-shadow: 0 4px 14px -3px rgba(18, 55, 36, 0.40);
+
+.bento-pill-dark {
+  background: rgba(255, 255, 255, 0.12);
+  color: #FFFFFF;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+}
+.bento-pill-dark:hover {
+  background: rgba(255, 255, 255, 0.22);
+}
+
+.bento-pill-amber {
+  background: #E28743;
+  color: #FFFFFF;
+  border: 1px solid #D97706;
+}
+.bento-pill-amber:hover {
+  background: #C87435;
 }
 
 /* Activity / commitment row cards */
@@ -584,3 +597,26 @@
   -webkit-overflow-scrolling: touch;
   overscroll-behavior-y: contain;
 }
+
+/* ============================================================
+   GLOBAL BENTO THEME HARMONIZATION
+   Maps legacy hardcoded colors to warm linen & deep evergreen palette
+   ============================================================ */
+.bg-\[\#063F35\], .bg-\[\#0D291E\], .bg-\[\#0A261D\] { background-color: #3E5514 !important; }
+.hover\:bg-\[\#042F28\]:hover, .hover\:bg-\[\#1A4232\]:hover, .hover\:bg-\[\#081C14\]:hover { background-color: #4D6819 !important; }
+.text-\[\#063F35\], .text-\[\#0D291E\] { color: #3E5514 !important; }
+.text-\[\#00A878\] { color: #3E5514 !important; }
+.bg-\[\#00A878\] { background-color: #3E5514 !important; }
+.border-\[\#063F35\], .border-\[\#0D291E\] { border-color: #3E5514 !important; }
+.focus\:border-\[\#063F35\]:focus, .focus\:border-\[\#00A878\]:focus { border-color: #3E5514 !important; }
+.focus\:ring-\[\#063F35\]:focus, .focus\:ring-\[\#00A878\]:focus { --tw-ring-color: #3E5514 !important; }
+.border-\[\#00A878\]\/20 { border-color: rgba(62, 85, 20, 0.2) !important; }
+.border-\[\#00A878\]\/30 { border-color: rgba(62, 85, 20, 0.3) !important; }
+.bg-\[\#E8F5F0\], .bg-\[\#EBF7F2\] { background-color: #F2F6EC !important; }
+.border-\[\#D1EBE1\] { border-color: #D2DEC1 !important; }
+.border-\[\#E4EBE8\] { border-color: #E6E0D6 !important; }
+.hover\:bg-\[\#F7F9F7\]:hover { background-color: #FAF7F2 !important; }
+.bg-\[\#F7F9F7\] { background-color: #FAF7F2 !important; }
+.text-\[\#17211F\] { color: #16221E !important; }
+.text-\[\#6F7D78\] { color: #586661 !important; }
+

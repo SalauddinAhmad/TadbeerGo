@@ -17,13 +17,13 @@ const MainApp: React.FC = () => {
 
   if (isLoading) {
     return (
-      <div className="min-h-screen bg-slate-900 flex items-center justify-center text-white">
-        <div className="flex flex-col items-center space-y-3">
-          <div className="w-14 h-14 rounded-2xl overflow-hidden ring-2 ring-emerald-500 shadow-xl bg-emerald-950 flex items-center justify-center">
-            <img src="/shaikh-avatar.jpg" alt="শায়খ মোখতার আহমাদ" className="w-full h-full object-cover object-top" />
+      <div className="min-h-screen bg-[#F4EFEB] flex items-center justify-center text-[#16221E] font-bengali">
+        <div className="flex flex-col items-center space-y-3.5">
+          <div className="w-16 h-16 rounded-full overflow-hidden p-0.5 border-2 border-[#3E5514] shadow-md bg-white">
+            <img src="/shaikh-avatar.jpg" alt="শায়খ মোখতার আহমাদ" className="w-full h-full object-cover object-top rounded-full" />
           </div>
-          <RefreshCw className="animate-spin text-emerald-400" size={24} />
-          <p className="text-xs text-slate-400">Loading TadbeerGo...</p>
+          <RefreshCw className="animate-spin text-[#3E5514]" size={22} />
+          <p className="text-xs text-[#586661] font-heading font-semibold">TadbeerGo লোড হচ্ছে...</p>
         </div>
       </div>
     );

@@ -80,3 +80,22 @@ export const formatBanglaDate = (dateStr?: string): string => {
   const monthName = banglaMonthNames[parts[1] - 1];
   return `${dayName}, ${dayNum} ${monthName}`;
 };
+
+export const formatBengaliActivityTitle = (title?: string): string => {
+  if (!title) return 'কোরআন হিফজ ও তাজবিদ পর্যালোচনা';
+  let t = title;
+  t = t.replace(/Tafsir of Surah Al-Baqarah/gi, 'সূরা আল-বাক্বারাহ তাফসির');
+  t = t.replace(/Class\s*#?\s*(\d+)/gi, (_, n) => `ক্লাস ${toBengaliDigits(n)}`);
+  t = t.replace(/Lesson\s*#?\s*(\d+)/gi, (_, n) => `পাঠ ${toBengaliDigits(n)}`);
+  t = t.replace(/\s*-\s*/g, ' – ');
+  return t;
+};
+
+export const formatBengaliTopic = (topic?: string): string => {
+  if (!topic) return 'সূরা আল-মুদ্দাসসির তাজবিদ বিশ্লেষণ ও মুখস্থ পরীক্ষা';
+  let t = topic;
+  if (/Comprehensive Tafsir/i.test(t)) {
+    return 'সূরা আল-বাক্বারাহর পূর্ণাঙ্গ তাফসির, ভাষাতাত্ত্বিক বিশ্লেষণ ও বাস্তব জীবনের দিকনির্দেশনা';
+  }
+  return t;
+};

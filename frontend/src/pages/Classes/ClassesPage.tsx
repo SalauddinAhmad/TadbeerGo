@@ -548,10 +548,12 @@ export const ClassesPage: React.FC = () => {
 
           <button
             onClick={openAddCourseModal}
-            className="flex items-center justify-center space-x-2 px-4 py-2.5 bg-[#063F35] hover:bg-[#042F28] text-white text-xs font-bold rounded-xl transition cursor-pointer shadow-xs active:scale-95"
+            className="flex items-center justify-center space-x-2.5 pl-5 pr-3 py-2 bg-[#6E3A0D] hover:bg-[#854610] text-white text-xs font-bold rounded-full transition cursor-pointer shadow-sm active:scale-95"
           >
-            <Plus size={16} />
             <span>+ নতুন কোর্স তৈরি করুন</span>
+            <span className="w-5 h-5 rounded-full bg-[#8A603E] text-white flex items-center justify-center shrink-0">
+              <Plus size={12} className="stroke-[2.8]" />
+            </span>
           </button>
         </div>
 
@@ -691,7 +693,7 @@ export const ClassesPage: React.FC = () => {
             <div className="flex flex-wrap items-center gap-2 shrink-0">
               <button
                 onClick={openAddSessionModal}
-                className="flex items-center justify-center space-x-1.5 px-4 py-2.5 bg-[#063F35] hover:bg-[#042F28] text-white text-xs font-bold rounded-xl transition cursor-pointer shadow-xs active:scale-95"
+                className="flex items-center justify-center space-x-1.5 px-5 py-2.5 bg-[#3E5514] hover:bg-[#4D6819] text-white text-xs font-bold rounded-full transition cursor-pointer shadow-xs active:scale-95"
               >
                 <Plus size={15} />
                 <span>+ নির্দিষ্ট ক্লাস সেশন যোগ করুন</span>
@@ -699,18 +701,18 @@ export const ClassesPage: React.FC = () => {
 
               <button
                 onClick={() => openEditCourseModal(selectedCourse)}
-                className="flex items-center justify-center space-x-1.5 px-3.5 py-2.5 bg-white border border-[#E4EBE8] hover:bg-[#F7F9F7] text-[#17211F] text-xs font-bold rounded-xl transition cursor-pointer"
+                className="flex items-center justify-center space-x-1.5 px-4 py-2.5 bg-white border border-[#E4EBE8] hover:bg-[#F2F6EC] text-[#17211F] text-xs font-bold rounded-full transition cursor-pointer"
               >
-                <Edit3 size={14} className="text-[#063F35]" />
+                <Edit3 size={14} className="text-[#3E5514]" />
                 <span>কোর্স সম্পাদনা</span>
               </button>
 
               <button
                 onClick={handleGenerateSessions}
-                className="flex items-center justify-center space-x-1.5 px-3.5 py-2.5 bg-[#E8F5F0] hover:bg-[#d5eee4] text-[#063F35] text-xs font-bold rounded-xl transition cursor-pointer border border-[#00A878]/20"
+                className="flex items-center justify-center space-x-1.5 px-5 py-2.5 bg-[#6E3A0D] hover:bg-[#854610] text-white text-xs font-bold rounded-full transition cursor-pointer shadow-xs active:scale-95"
                 title="পরবর্তী ২ মাসের ক্লাস স্বয়ংক্রিয়ভাবে তৈরি করুন"
               >
-                <RotateCw size={13} />
+                <RotateCw size={13} className="text-[#FDF5ED]" />
                 <span>+ ২ মাসের রুটিন</span>
               </button>
 
@@ -893,7 +895,7 @@ export const ClassesPage: React.FC = () => {
                             setProgressValue(sess.progress_value || '');
                             setHomework(sess.homework || '');
                           }}
-                          className="px-3.5 py-2 bg-[#063F35] hover:bg-[#042F28] active:scale-95 text-white text-xs font-bold rounded-xl transition cursor-pointer flex items-center gap-1.5 shadow-xs"
+                          className="px-4 py-2 bg-[#3E5514] hover:bg-[#4D6819] active:scale-95 text-white text-xs font-bold rounded-full transition cursor-pointer flex items-center gap-1.5 shadow-xs"
                         >
                           <CheckCircle2 size={13} className="text-[#00A878]" />
                           <span>অগ্রগতি রেকর্ড</span>
@@ -962,7 +964,7 @@ export const ClassesPage: React.FC = () => {
                 </p>
                 <button
                   onClick={openAddSessionModal}
-                  className="mt-3 inline-flex items-center gap-1.5 px-4 py-2 bg-[#063F35] text-white text-xs font-bold rounded-xl hover:bg-[#042F28] transition cursor-pointer"
+                  className="mt-3 inline-flex items-center gap-1.5 px-4 py-2 bg-[#3E5514] text-white text-xs font-bold rounded-full hover:bg-[#4D6819] transition cursor-pointer"
                 >
                   <Plus size={14} />
                   <span>এখনই একটি ক্লাস সেশন যোগ করুন</span>
@@ -1153,7 +1155,7 @@ export const ClassesPage: React.FC = () => {
               <button
                 type="submit"
                 disabled={isSubmittingCourse}
-                className="px-5 py-2.5 text-xs font-bold text-white bg-[#063F35] hover:bg-[#042F28] rounded-xl cursor-pointer shadow-xs transition"
+                className="px-6 py-2.5 text-xs font-bold text-white bg-[#3E5514] hover:bg-[#4D6819] rounded-full cursor-pointer shadow-xs transition active:scale-95"
               >
                 {isSubmittingCourse ? 'তৈরি করা হচ্ছে...' : 'কোর্স নিশ্চিত করুন'}
               </button>
@@ -1338,7 +1340,7 @@ export const ClassesPage: React.FC = () => {
               <button
                 type="submit"
                 disabled={isSubmittingCourse}
-                className="px-5 py-2.5 text-xs font-bold text-white bg-[#063F35] hover:bg-[#042F28] rounded-xl cursor-pointer shadow-xs transition"
+                className="px-6 py-2.5 text-xs font-bold text-white bg-[#3E5514] hover:bg-[#4D6819] rounded-full cursor-pointer shadow-xs transition active:scale-95"
               >
                 {isSubmittingCourse ? 'সংরক্ষণ হচ্ছে...' : 'হালনাগাদ সম্পন্ন করুন'}
               </button>
@@ -1531,7 +1533,7 @@ export const ClassesPage: React.FC = () => {
               <button
                 type="submit"
                 disabled={isSubmittingSession}
-                className="px-5 py-2.5 text-xs font-bold text-white bg-[#063F35] hover:bg-[#042F28] rounded-xl cursor-pointer shadow-xs transition"
+                className="px-6 py-2.5 text-xs font-bold text-white bg-[#3E5514] hover:bg-[#4D6819] rounded-full cursor-pointer shadow-xs transition active:scale-95"
               >
                 {isSubmittingSession ? 'যোগ করা হচ্ছে...' : 'ক্লাস সেশন নিশ্চিত করুন'}
               </button>
@@ -1720,7 +1722,7 @@ export const ClassesPage: React.FC = () => {
               <button
                 type="submit"
                 disabled={isSubmittingSession}
-                className="px-5 py-2.5 text-xs font-bold text-white bg-[#063F35] hover:bg-[#042F28] rounded-xl cursor-pointer shadow-xs transition"
+                className="px-6 py-2.5 text-xs font-bold text-white bg-[#3E5514] hover:bg-[#4D6819] rounded-full cursor-pointer shadow-xs transition active:scale-95"
               >
                 {isSubmittingSession ? 'সংরক্ষণ হচ্ছে...' : 'হালনাগাদ সংরক্ষণ করুন'}
               </button>
@@ -1897,7 +1899,7 @@ export const ClassesPage: React.FC = () => {
               </button>
               <button
                 type="submit"
-                className="px-5 py-2.5 text-xs font-bold text-white bg-[#063F35] hover:bg-[#042F28] rounded-xl cursor-pointer shadow-xs transition"
+                className="px-6 py-2.5 text-xs font-bold text-white bg-[#3E5514] hover:bg-[#4D6819] rounded-full cursor-pointer shadow-xs transition active:scale-95"
               >
                 অগ্রগতি সংরক্ষণ করুন
               </button>
@@ -2043,7 +2045,7 @@ export const ClassesPage: React.FC = () => {
               </button>
               <button
                 type="submit"
-                className="px-5 py-2.5 text-xs font-bold text-white bg-[#063F35] hover:bg-[#042F28] rounded-xl cursor-pointer shadow-xs transition"
+                className="px-6 py-2.5 text-xs font-bold text-white bg-[#3E5514] hover:bg-[#4D6819] rounded-full cursor-pointer shadow-xs transition active:scale-95"
               >
                 পুনঃনির্ধারণ নিশ্চিত করুন
               </button>

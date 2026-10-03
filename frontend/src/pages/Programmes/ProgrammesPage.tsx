@@ -387,10 +387,12 @@ export const ProgrammesPage: React.FC = () => {
 
         <button
           onClick={openAddModal}
-          className="flex items-center justify-center space-x-1.5 px-4 py-2.5 bg-[#063F35] hover:bg-[#042F28] text-white text-xs font-bold rounded-xl transition shadow-xs cursor-pointer active:scale-95 shrink-0"
+          className="flex items-center justify-center space-x-2.5 pl-5 pr-3 py-2 bg-[#6E3A0D] hover:bg-[#854610] text-white text-xs font-bold rounded-full transition shadow-sm cursor-pointer active:scale-95 shrink-0"
         >
-          <Plus size={16} />
           <span>+ নতুন কর্মসূচি যুক্ত করুন</span>
+          <span className="w-5 h-5 rounded-full bg-[#8A603E] text-white flex items-center justify-center shrink-0">
+            <Plus size={12} className="stroke-[2.8]" />
+          </span>
         </button>
       </div>
 
@@ -409,9 +411,9 @@ export const ProgrammesPage: React.FC = () => {
             <button
               key={st.id}
               onClick={() => setSelectedStatus(st.id)}
-              className={`px-3 py-1.5 text-xs font-bold rounded-xl transition cursor-pointer ${
+              className={`px-4 py-1.5 text-xs font-bold rounded-full transition cursor-pointer ${
                 selectedStatus === st.id
-                  ? 'bg-[#063F35] text-white shadow-xs'
+                  ? 'bg-[#3E5514] text-white shadow-xs'
                   : 'bg-white text-[#17211F]/70 hover:bg-[#E4EBE8] border border-[#E4EBE8]'
               }`}
             >
@@ -773,7 +775,7 @@ export const ProgrammesPage: React.FC = () => {
             </p>
             <button
               onClick={openAddModal}
-              className="mt-3 inline-flex items-center gap-1.5 px-4 py-2 bg-[#063F35] text-white text-xs font-bold rounded-xl hover:bg-[#042F28] transition cursor-pointer"
+              className="mt-3 inline-flex items-center gap-1.5 px-5 py-2 bg-[#3E5514] text-white text-xs font-bold rounded-full hover:bg-[#4D6819] transition cursor-pointer active:scale-95"
             >
               <Plus size={14} />
               <span>নতুন কর্মসূচি যোগ করুন</span>
@@ -793,7 +795,7 @@ export const ProgrammesPage: React.FC = () => {
           >
             <div className="flex items-center justify-between border-b border-[#E4EBE8] pb-3">
               <div className="flex items-center gap-2.5">
-                <div className="w-8 h-8 rounded-lg bg-[#063F35] text-white flex items-center justify-center">
+                <div className="w-8 h-8 rounded-lg bg-[#3E5514] text-white flex items-center justify-center">
                   <MinbarIcon size={18} />
                 </div>
                 <div>
@@ -1049,7 +1051,7 @@ export const ProgrammesPage: React.FC = () => {
               <button
                 type="submit"
                 disabled={isSubmitting}
-                className="px-5 py-2.5 text-xs font-bold text-white bg-[#063F35] hover:bg-[#042F28] rounded-xl cursor-pointer shadow-xs transition"
+                className="px-6 py-2.5 text-xs font-bold text-white bg-[#3E5514] hover:bg-[#4D6819] rounded-full cursor-pointer shadow-xs transition active:scale-95"
               >
                 {isSubmitting ? 'সংরক্ষণ করা হচ্ছে...' : 'কর্মসূচি যোগ করুন'}
               </button>
@@ -1346,7 +1348,7 @@ export const ProgrammesPage: React.FC = () => {
               <button
                 type="submit"
                 disabled={isSubmitting}
-                className="px-5 py-2.5 text-xs font-bold text-white bg-[#063F35] hover:bg-[#042F28] rounded-xl cursor-pointer shadow-xs transition"
+                className="px-6 py-2.5 text-xs font-bold text-white bg-[#3E5514] hover:bg-[#4D6819] rounded-full cursor-pointer shadow-xs transition active:scale-95"
               >
                 {isSubmitting ? 'সংরক্ষণ করা হচ্ছে...' : 'হালনাগাদ সংরক্ষণ করুন'}
               </button>
@@ -1444,7 +1446,7 @@ export const ProgrammesPage: React.FC = () => {
               </button>
               <button
                 type="submit"
-                className="px-5 py-2.5 text-xs font-bold text-white bg-[#063F35] hover:bg-[#042F28] rounded-xl cursor-pointer shadow-xs transition"
+                className="px-6 py-2.5 text-xs font-bold text-white bg-[#3E5514] hover:bg-[#4D6819] rounded-full cursor-pointer shadow-xs transition active:scale-95"
               >
                 টাস্ক যোগ করুন
               </button>

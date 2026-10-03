@@ -235,10 +235,10 @@ export const LiveScheduleHub: React.FC<LiveScheduleHubProps> = ({
       {/* =========================================
           2. NEXT COMMITMENT HERO CARD (EXACT MATCH TO MOCKUP PHONE 1)
          ========================================= */}
-      <div className="rounded-[28px] overflow-hidden relative shadow-[0_12px_32px_-6px_rgba(6,63,53,0.35)] text-white p-5 sm:p-6 bg-gradient-to-br from-[#063F35] via-[#042F28] to-[#021F1B] border border-[#00A878]/30 font-bengali">
+      <div className="rounded-[28px] overflow-hidden relative shadow-[0_12px_32px_-6px_rgba(62,85,20,0.25)] text-white p-5 sm:p-6 bg-gradient-to-br from-[#3E5514] via-[#486317] to-[#344810] border border-[#D2DEC1]/30 font-bengali">
         {/* Subtle Islamic Mosque Arch Silhouette Watermark in Background */}
         <div className="absolute right-0 bottom-0 top-0 w-44 pointer-events-none opacity-[0.14] flex items-center justify-end pr-2">
-          <svg viewBox="0 0 200 240" fill="currentColor" className="w-full h-full text-emerald-200">
+          <svg viewBox="0 0 200 240" fill="currentColor" className="w-full h-full text-[#F2F6EC]">
             {/* Mosque dome silhouette */}
             <path d="M100 20 C100 20 120 70 160 90 L160 240 L40 240 L40 90 C80 70 100 20 100 20 Z" />
             <path d="M160 110 L190 120 L190 240 L160 240 Z" />
@@ -253,20 +253,20 @@ export const LiveScheduleHub: React.FC<LiveScheduleHubProps> = ({
             setSelectedEventData(primaryNext);
             setIsEventSheetOpen(true);
           }}
-          className="absolute right-5 top-1/2 -translate-y-1/2 w-12 h-12 rounded-full bg-white/10 backdrop-blur-md border border-white/20 flex items-center justify-center text-[#00A878] shadow-inner hidden sm:flex cursor-pointer hover:scale-105 transition"
+          className="absolute right-5 top-1/2 -translate-y-1/2 w-12 h-12 rounded-full bg-white/10 backdrop-blur-md border border-white/20 flex items-center justify-center text-[#F2F6EC] shadow-inner hidden sm:flex cursor-pointer hover:scale-105 transition"
         >
           <BookOpen size={22} strokeWidth={2} />
         </div>
 
         {/* Top Row: NEXT COMMITMENT + Countdown Pill */}
         <div className="relative z-10 flex items-center justify-between gap-2">
-          <span className="text-[10px] sm:text-[11px] font-bold uppercase tracking-wider text-emerald-300/90 font-heading">
+          <span className="text-[10px] sm:text-[11px] font-bold uppercase tracking-wider text-[#D2DEC1] font-heading">
             পরবর্তী কর্মসূচি
           </span>
 
           {/* Frosted Countdown Capsule */}
           <div className="flex items-center gap-1.5 px-3 py-1 rounded-full bg-white/10 backdrop-blur-md border border-white/15 text-xs text-white font-medium shadow-2xs font-bengali">
-            <Clock size={12} className="text-[#00A878]" />
+            <Clock size={12} className="text-[#D2DEC1]" />
             <span>{countdownText}</span>
           </div>
         </div>
@@ -279,27 +279,27 @@ export const LiveScheduleHub: React.FC<LiveScheduleHubProps> = ({
           <div className="text-base sm:text-lg font-bold text-white tracking-tight font-heading flex items-center gap-2">
             <span>{primaryNext?.title || 'বালাগাহ ও ফাসাহাহ'}</span>
           </div>
-          <div className="text-xs text-emerald-200/80 font-medium">
+          <div className="text-xs text-[#D2DEC1] font-medium">
             {primaryNext?.topic || 'ক্লাস #১২'}
           </div>
         </div>
 
         {/* Metadata Chips: Online Class • 1h 30m */}
-        <div className="relative z-10 mt-3.5 flex items-center gap-4 text-xs text-emerald-100/90 font-medium">
+        <div className="relative z-10 mt-3.5 flex items-center gap-4 text-xs text-[#F2F6EC]/90 font-medium">
           <span className="flex items-center gap-1.5">
-            <Monitor size={14} className="text-[#00A878]" />
+            <Monitor size={14} className="text-[#D2DEC1]" />
             <span>{primaryNext?.location || 'অনলাইন ক্লাস'}</span>
           </span>
           <span className="flex items-center gap-1.5">
-            <Clock size={14} className="text-[#00A878]" />
+            <Clock size={14} className="text-[#D2DEC1]" />
             <span>১ঘণ্টা ৩০মি</span>
           </span>
         </div>
 
         {/* Prepare Subtext & Bottom Action Button */}
-        <div className="relative z-10 mt-3 pt-3 border-t border-emerald-800/40 flex items-center justify-between gap-3">
-          <div className="flex items-center gap-1.5 text-xs text-emerald-100/80 font-medium truncate">
-            <BookOpen size={13} className="text-[#00A878] shrink-0" />
+        <div className="relative z-10 mt-3 pt-3 border-t border-white/15 flex items-center justify-between gap-3">
+          <div className="flex items-center gap-1.5 text-xs text-[#F2F6EC]/90 font-medium truncate">
+            <BookOpen size={13} className="text-[#D2DEC1] shrink-0" />
             <span className="truncate">প্রস্তুতি: অধ্যায় ৪ · বালাগাত উদাহরণ</span>
           </div>
 
@@ -308,7 +308,7 @@ export const LiveScheduleHub: React.FC<LiveScheduleHubProps> = ({
               setSelectedEventData(primaryNext);
               setIsEventSheetOpen(true);
             }}
-            className="shrink-0 px-3.5 py-1.5 rounded-full bg-white hover:bg-slate-100 active:scale-95 text-[#063F35] font-bold text-xs shadow-sm transition flex items-center gap-1 cursor-pointer"
+            className="shrink-0 px-3.5 py-1.5 rounded-full bg-white hover:bg-[#F2F6EC] active:scale-95 text-[#3E5514] font-bold text-xs shadow-sm transition flex items-center gap-1 cursor-pointer"
           >
             <span>সেশন দেখুন</span>
             <ArrowRight size={13} />

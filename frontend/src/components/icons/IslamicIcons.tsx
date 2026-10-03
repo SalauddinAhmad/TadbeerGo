@@ -408,3 +408,98 @@ export const HalqaCircleIcon: React.FC<IconProps> = ({
     <path d="M4 14.5c0 4.5 3.5 6.5 8 6.5s8-2 8-6.5" strokeDasharray="2 2" strokeWidth={1.2} />
   </svg>
 );
+
+/**
+ * Premium Bespoke Quick Add Icons
+ */
+export const EventCalendarIcon: React.FC<IconProps> = ({ size = 26, className = '', strokeWidth = 1.8, ...props }) => (
+  <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={strokeWidth} strokeLinecap="round" strokeLinejoin="round" className={className} {...props}>
+    <rect x="3" y="4" width="18" height="17" rx="3.5" />
+    <path d="M16 2v4" />
+    <path d="M8 2v4" />
+    <path d="M3 9h18" strokeWidth={1.5} />
+    <circle cx="8" cy="13.5" r="1.2" fill="currentColor" />
+    <circle cx="12" cy="13.5" r="1.2" fill="currentColor" />
+    <circle cx="16" cy="13.5" r="1.2" fill="currentColor" />
+    <circle cx="8" cy="17.5" r="1.2" fill="currentColor" />
+    <path d="M12 17.5l1.5 1.5 3-3" strokeWidth={2} />
+  </svg>
+);
+
+export const CourseBookIcon: React.FC<IconProps> = ({ size = 26, className = '', strokeWidth = 1.8, ...props }) => (
+  <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={strokeWidth} strokeLinecap="round" strokeLinejoin="round" className={className} {...props}>
+    <path d="M4 19.5v-14A2.5 2.5 0 0 1 6.5 3H20v16H6.5a2.5 2.5 0 0 0-2.5 2.5z" />
+    <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20" />
+    <path d="M8 7h8" strokeWidth={1.5} />
+    <path d="M8 11h6" strokeWidth={1.5} />
+    {/* Ornate bookmark ribbon */}
+    <path d="M15 3v7l-2-1.5L11 10V3" fill="currentColor" fillOpacity="0.25" strokeWidth={1.5} />
+  </svg>
+);
+
+export const JumuaMosqueIcon: React.FC<IconProps> = ({ size = 26, className = '', strokeWidth = 1.8, ...props }) => (
+  <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={strokeWidth} strokeLinecap="round" strokeLinejoin="round" className={className} {...props}>
+    <path d="M12 3a1 1 0 1 0-1 1" strokeWidth={1.2} />
+    <path d="M12 4v2" />
+    <path d="M7 11c0-3.5 2.2-5 5-5s5 1.5 5 5" />
+    <path d="M5 11h14v10H5z" />
+    <path d="M10 21v-4a2 2 0 0 1 4 0v4" />
+    <path d="M3 8h2v13H3z" />
+    <path d="M4 5l1-1.5 1 1.5V8H4z" />
+    <path d="M19 8h2v13h-2z" />
+    <path d="M20 5l1-1.5 1 1.5V8h-2z" />
+    <path d="M2 21h20" />
+  </svg>
+);
+
+export const DawahMicIcon: React.FC<IconProps> = ({ size = 26, className = '', strokeWidth = 1.8, ...props }) => (
+  <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={strokeWidth} strokeLinecap="round" strokeLinejoin="round" className={className} {...props}>
+    <rect x="9" y="2" width="6" height="12" rx="3" />
+    <path d="M5 10a7 7 0 0 0 14 0" />
+    <line x1="12" y1="17" x2="12" y2="21" />
+    <line x1="8" y1="21" x2="16" y2="21" />
+    <path d="M19.5 7.5a4 4 0 0 1 0 5" strokeWidth={1.5} />
+    <path d="M4.5 7.5a4 4 0 0 0 0 5" strokeWidth={1.5} />
+  </svg>
+);
+
+export const QuickDraftIcon: React.FC<IconProps> = ({ size = 26, className = '', strokeWidth = 1.8, ...props }) => (
+  <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={strokeWidth} strokeLinecap="round" strokeLinejoin="round" className={className} {...props}>
+    <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" />
+    <polyline points="14 2 14 8 20 8" />
+    <line x1="8" y1="13" x2="16" y2="13" strokeWidth={1.5} />
+    <line x1="8" y1="17" x2="13" y2="17" strokeWidth={1.5} />
+    <circle cx="8" cy="9" r="1" fill="currentColor" />
+  </svg>
+);
+
+export const ContactsDirectoryIcon: React.FC<IconProps> = ({ size = 26, className = '', strokeWidth = 1.8, ...props }) => (
+  <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={strokeWidth} strokeLinecap="round" strokeLinejoin="round" className={className} {...props}>
+    <rect x="4" y="3" width="16" height="18" rx="2.5" />
+    <line x1="2" y1="7" x2="4" y2="7" strokeWidth={2} />
+    <line x1="2" y1="12" x2="4" y2="12" strokeWidth={2} />
+    <line x1="2" y1="17" x2="4" y2="17" strokeWidth={2} />
+    <circle cx="12" cy="9.5" r="2.5" />
+    <path d="M8 17c0-2 1.8-3.5 4-3.5s4 1.5 4 3.5" />
+  </svg>
+);
+
+/**
+ * Custom Mosque Architectural Illustration
+ * Harmonized in Brand Olive (#3E5514), Rich Chocolate (#6E3A0D) and Warm Linen (#FDF5ED)
+ */
+export const MosqueCustomIllustration: React.FC<{
+  size?: number | string;
+  className?: string;
+  opacity?: number;
+}> = ({ size = 64, className = '', opacity = 1 }) => (
+  <img
+    src="/mosque-custom.svg"
+    alt="Mosque Sanctuary"
+    width={size}
+    height={size}
+    style={{ opacity }}
+    className={`object-contain select-none pointer-events-none ${className}`}
+  />
+);
+

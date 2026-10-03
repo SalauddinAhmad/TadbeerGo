@@ -1,16 +1,21 @@
 import React, { useState, useEffect } from 'react';
-import { X, AlertTriangle, Clock, MapPin, Calendar as CalIcon, Shield, Users, Compass, CheckSquare, Sparkles } from 'lucide-react';
+import { X, AlertTriangle, Clock, MapPin, Calendar as CalIcon, Shield, Sparkles, Check, ChevronDown } from 'lucide-react';
 import {
-  MosqueIcon,
-  QuranRehalIcon,
+  EventCalendarIcon,
+  CourseBookIcon,
+  JumuaMosqueIcon,
+  DawahMicIcon,
+  QuickDraftIcon,
+  ContactsDirectoryIcon,
   MinbarIcon,
-  HalqaCircleIcon,
+  MihrabIcon,
   TasbihIcon,
-  RubElHizbIcon
+  HalqaCircleIcon
 } from '../icons/IslamicIcons';
 import { ActivityType } from '../../types';
 import { api } from '../../api/client';
 import { useAuth } from '../../context/AuthContext';
+import { toBengaliDigits, formatBanglaDate } from '../../utils/bengali';
 
 interface AddActivityModalProps {
   isOpen: boolean;
@@ -89,74 +94,144 @@ export const AddActivityModal: React.FC<AddActivityModalProps> = ({
       onSuccess();
       onClose();
     } catch (err: any) {
-      alert(err.message || 'Failed to create activity');
+      alert(err.message || 'শিডিউল সংরক্ষণ ব্যর্থ হয়েছে');
     } finally {
       setIsSubmitting(false);
     }
   };
 
-  const activityTypes: { type: ActivityType; label: string; icon: React.FC<any> }[] = [
-    { type: 'PROGRAMME', label: 'Programme', icon: HalqaCircleIcon },
-    { type: 'LECTURE', label: 'Lecture', icon: MinbarIcon },
-    { type: 'CLASS', label: 'Class Session', icon: QuranRehalIcon },
-    { type: 'JUMUAH', label: 'Jumu\'ah', icon: MosqueIcon },
-    { type: 'KHUTBAH', label: 'Khutbah', icon: MinbarIcon },
-    { type: 'MEETING', label: 'Meeting', icon: Users },
-    { type: 'TRAVEL', label: 'Travel', icon: Compass },
-    { type: 'PERSONAL', label: 'Personal', icon: TasbihIcon },
-    { type: 'TASK', label: 'Task', icon: CheckSquare },
-    { type: 'OTHER', label: 'Other', icon: RubElHizbIcon },
+  // Quick title autofill suggestions
+  const titleSuggestions = [
+    'সূরা আল-বাক্বারাহ তাফসির ক্লাস',
+    'জাতীয় যুব সম্মেলন ও নসিহত',
+    'মাসিক তাফসিরুল কুরআন মাহফিল',
+    'জুমু\'আ প্রস্তুতি ও বয়ান',
+    'শূরা ও পরামর্শ অধিবেশন'
+  ];
+
+  // Quick venue suggestions
+  const venueSuggestions = [
+    'সোবহানবাগ জামে মসজিদ',
+    'ধানমন্ডি ক্যাম্পাস',
+    'অনলাইন জুম স্টুডিও',
+    'উত্তরা মারকাজ',
+    'মিরপুর কেন্দ্রীয় মিলনায়তন'
+  ];
+
+  // Quick date presets
+  const setQuickDate = (daysToAdd: number) => {
+    const d = new Date();
+    d.setDate(d.getDate() + daysToAdd);
+    setDate(d.toISOString().split('T')[0]);
+  };
+
+  const setNextFriday = () => {
+    const d = new Date();
+    const day = d.getDay();
+    const diff = (5 - day + 7) % 7 || 7;
+    d.setDate(d.getDate() + diff);
+    setDate(d.toISOString().split('T')[0]);
+  };
+
+  // Calculate duration between startTime and endTime
+  const calculateDuration = () => {
+    if (!startTime || !endTime) return null;
+    const [h1, m1] = startTime.split(':').map(Number);
+    const [h2, m2] = endTime.split(':').map(Number);
+    const diffMins = (h2 * 60 + m2) - (h1 * 60 + m1);
+    if (diffMins <= 0) return null;
+    const hours = Math.floor(diffMins / 60);
+    const mins = diffMins % 60;
+    if (hours > 0 && mins > 0) return `${toBengaliDigits(hours)} ঘণ্টা ${toBengaliDigits(mins)} মিনিট`;
+    if (hours > 0) return `${toBengaliDigits(hours)} ঘণ্টা`;
+    return `${toBengaliDigits(mins)} মিনিট`;
+  };
+
+  const durationStr = calculateDuration();
+
+  // 4 Primary Bento Categories
+  const primaryCategories: { type: ActivityType; label: string; subtitle: string; icon: React.FC<any> }[] = [
+    { type: 'PROGRAMME', label: 'দাওয়াহ কর্মসূচি', subtitle: 'সম্মেলন ও মাহফিল', icon: HalqaCircleIcon },
+    { type: 'CLASS', label: 'কোর্স ক্লাস', subtitle: 'তাফসির ও হাদিস দরস', icon: CourseBookIcon },
+    { type: 'JUMUAH', label: 'জুমু\'আ খুতবাহ', subtitle: 'মসজিদ ও জুমার খুতবাহ', icon: JumuaMosqueIcon },
+    { type: 'MEETING', label: 'পরামর্শ বৈঠক', subtitle: 'শূরা ও কাউন্সিলিং', icon: ContactsDirectoryIcon },
+  ];
+
+  // Secondary Compact Categories
+  const secondaryCategories: { type: ActivityType; label: string; icon: React.FC<any> }[] = [
+    { type: 'LECTURE', label: 'ইলমি বয়ান', icon: DawahMicIcon },
+    { type: 'TRAVEL', label: 'সফর ও ভ্রমণ', icon: EventCalendarIcon },
+    { type: 'PERSONAL', label: 'ব্যক্তিগত সময়', icon: TasbihIcon },
+    { type: 'TASK', label: 'জরুরি তাগিদ', icon: QuickDraftIcon },
+    { type: 'KHUTBAH', label: 'খুতবাহ প্রস্তুতি', icon: MinbarIcon },
+    { type: 'OTHER', label: 'অন্যান্য বিষয়', icon: MihrabIcon },
   ];
 
   return (
-    <div className="fixed inset-0 z-50 flex items-end sm:items-center justify-center p-0 sm:p-4 bg-black/60 backdrop-blur-xs animate-in fade-in duration-200">
-      <div className="relative w-full max-w-lg overflow-hidden bg-white rounded-t-3xl sm:rounded-3xl border border-slate-200 shadow-2xl flex flex-col max-h-[92vh] animate-slide-up-mobile sm:animate-none safe-area-bottom">
-        {/* Grab Handle for mobile bottom sheet */}
-        <div className="sm:hidden w-12 h-1 rounded-full bg-slate-300 mx-auto mt-3 mb-1" />
+    <div
+      onClick={onClose}
+      className="fixed inset-0 z-50 flex items-end sm:items-center justify-center p-0 sm:p-4 bg-black/40 backdrop-blur-xs animate-in fade-in duration-200 font-bengali"
+    >
+      <div
+        className="relative w-full max-w-xl overflow-hidden bg-[#FBF9F5] rounded-t-[32px] sm:rounded-[32px] border border-[#E8E2D7] shadow-[0_30px_70px_-15px_rgba(62,85,20,0.2)] flex flex-col max-h-[92vh] animate-slide-up-mobile sm:animate-none safe-area-bottom"
+        onClick={(e) => e.stopPropagation()}
+      >
+        {/* Mobile Pull Indicator */}
+        <div className="sm:hidden w-12 h-1.5 rounded-full bg-[#E0D8CA] mx-auto mt-2.5 mb-1" />
 
-        {/* Header */}
-        <div className="flex items-center justify-between px-6 py-4 border-b border-slate-100 bg-slate-50/60">
-          <div className="flex items-center gap-3">
-            <div className="w-9 h-9 rounded-xl bg-emerald-800 text-white flex items-center justify-center font-bold text-sm shadow-xs">
-              <RubElHizbIcon size={18} />
+        {/* Modal Header */}
+        <div className="flex items-center justify-between px-6 py-4.5 border-b border-[#EFECE6] bg-white">
+          <div className="flex items-center gap-3.5">
+            <div className="w-11 h-11 rounded-2xl bg-[#3E5514] text-white flex items-center justify-center font-bold text-sm shadow-sm ring-4 ring-[#F2F6EC]">
+              <EventCalendarIcon size={22} />
             </div>
             <div>
-              <h2 className="text-base sm:text-lg font-bold font-heading text-slate-900">
-                + নতুন শিডিউল যোগ করুন
+              <div className="inline-flex items-center gap-1.5 px-2 py-0.5 rounded-full bg-[#F4EFEB] text-[#3E5514] text-[10px] font-bold uppercase tracking-wider mb-0.5">
+                <span>দ্বীনি শিডিউলার · ২০২৬</span>
+              </div>
+              <h2 className="text-base sm:text-lg font-black font-heading text-[#16221E] tracking-tight">
+                নতুন শিডিউল যোগ করুন
               </h2>
-              <p className="text-xs text-slate-600 font-medium">Record a lecture, class, Jumu'ah or commitment</p>
             </div>
           </div>
           <button
             onClick={onClose}
-            className="p-1.5 text-slate-500 hover:text-slate-800 hover:bg-slate-200/60 rounded-xl transition cursor-pointer"
+            className="w-9 h-9 rounded-full bg-[#F4EFEB] hover:bg-[#EAE4DC] border border-[#E6E0D6] flex items-center justify-center text-[#586661] hover:text-[#16221E] transition cursor-pointer active:scale-95"
           >
-            <X size={18} />
+            <X size={16} />
           </button>
         </div>
 
-        {/* Form Body */}
-        <form onSubmit={handleSubmit} className="p-6 space-y-4 overflow-y-auto flex-1 text-slate-900">
+        {/* Form Body with Bento Grid Sections */}
+        <form onSubmit={handleSubmit} className="p-5 sm:p-6 space-y-4 overflow-y-auto flex-1 text-[#16221E]">
           {/* Conflict Alert Banner */}
           {conflicts.length > 0 && (
-            <div className="p-3.5 bg-amber-50 border border-amber-300 rounded-2xl flex items-start space-x-3 text-amber-900 text-xs shadow-2xs">
+            <div className="p-3.5 bg-amber-50/90 border border-amber-200 rounded-2xl flex items-start space-x-3 text-amber-900 text-xs shadow-2xs animate-pulse">
               <AlertTriangle className="text-amber-600 shrink-0 mt-0.5" size={16} />
               <div>
-                <span className="font-bold text-amber-950">Schedule Conflict Detected!</span>
-                <p className="mt-0.5 text-amber-900">
-                  Collides with: <strong>{conflicts[0].title}</strong> ({conflicts[0].start_time?.substring(0, 5)} - {conflicts[0].end_time?.substring(0, 5)})
+                <span className="font-bold text-amber-950">সময়ের সাংঘর্ষিকতা ধরা পড়েছে!</span>
+                <p className="mt-0.5 text-amber-900 font-medium">
+                  এই সময়ে আরেকটি কর্মসূচি রয়েছে: <strong>{conflicts[0].title}</strong> ({conflicts[0].start_time?.substring(0, 5)} - {conflicts[0].end_time?.substring(0, 5)})
                 </p>
               </div>
             </div>
           )}
 
-          {/* Activity Type Selection */}
-          <div>
-            <label className="block text-xs font-bold text-slate-800 mb-1.5">
-              কার্যক্রমের ধরন / Activity Type *
-            </label>
-            <div className="grid grid-cols-2 sm:grid-cols-3 gap-1.5">
-              {activityTypes.map((item) => {
+          {/* ========================================================
+              SECTION 1: BENTO ACTIVITY TYPE SELECTOR
+             ======================================================== */}
+          <div className="bg-white rounded-[24px] p-4.5 border border-[#E8E2D8] shadow-2xs space-y-3">
+            <div className="flex items-center justify-between">
+              <span className="text-xs font-bold text-[#16221E] font-heading flex items-center gap-1.5">
+                <span className="w-2 h-2 rounded-full bg-[#3E5514]" />
+                কর্মসূচির ধরন নির্বাচন করুন
+              </span>
+              <span className="text-[11px] text-[#8C9893] font-medium">নির্ধারিত বিভাগ</span>
+            </div>
+
+            {/* 4 Primary Bento Tiles */}
+            <div className="grid grid-cols-2 gap-2.5">
+              {primaryCategories.map((item) => {
                 const Icon = item.icon;
                 const isSelected = type === item.type;
                 return (
@@ -164,13 +239,47 @@ export const AddActivityModal: React.FC<AddActivityModalProps> = ({
                     key={item.type}
                     type="button"
                     onClick={() => setType(item.type)}
-                    className={`flex items-center gap-2 px-3 py-2 text-xs font-bold rounded-xl border text-left transition cursor-pointer ${
+                    className={`flex items-center gap-3 p-3 rounded-2xl border text-left transition-all duration-150 cursor-pointer active:scale-98 ${
                       isSelected
-                        ? 'bg-emerald-800 border-emerald-900 text-white shadow-xs'
-                        : 'bg-slate-50/80 border-slate-200 text-slate-700 hover:bg-slate-100 hover:text-slate-950'
+                        ? 'bg-[#3E5514] border-[#3E5514] text-white shadow-sm ring-2 ring-[#3E5514]/20'
+                        : 'bg-[#FAF8F5] border-[#EAE4DC] text-[#16221E] hover:bg-white hover:border-[#3E5514]/40'
                     }`}
                   >
-                    <Icon size={14} className={isSelected ? 'text-emerald-200' : 'text-emerald-700'} />
+                    <div
+                      className={`w-9 h-9 rounded-xl flex items-center justify-center shrink-0 ${
+                        isSelected ? 'bg-white/20 text-white' : 'bg-white text-[#1E7E56] border border-[#E2DDD3] shadow-2xs'
+                      }`}
+                    >
+                      <Icon size={18} />
+                    </div>
+                    <div className="min-w-0 flex-1">
+                      <div className="text-xs font-black truncate">{item.label}</div>
+                      <div className={`text-[10px] truncate ${isSelected ? 'text-white/70' : 'text-[#8C9893]'}`}>
+                        {item.subtitle}
+                      </div>
+                    </div>
+                  </button>
+                );
+              })}
+            </div>
+
+            {/* Secondary Category Pills */}
+            <div className="pt-1 flex flex-wrap gap-1.5">
+              {secondaryCategories.map((item) => {
+                const Icon = item.icon;
+                const isSelected = type === item.type;
+                return (
+                  <button
+                    key={item.type}
+                    type="button"
+                    onClick={() => setType(item.type)}
+                    className={`inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-[11px] font-bold border transition-all cursor-pointer active:scale-95 ${
+                      isSelected
+                        ? 'bg-[#1E7E56] border-[#1E7E56] text-white shadow-xs'
+                        : 'bg-[#F4EFEB] border-[#E4DDD3] text-[#586661] hover:text-[#16221E] hover:bg-white'
+                    }`}
+                  >
+                    <Icon size={12} />
                     <span>{item.label}</span>
                   </button>
                 );
@@ -178,148 +287,275 @@ export const AddActivityModal: React.FC<AddActivityModalProps> = ({
             </div>
           </div>
 
-          {/* Title */}
-          <div>
-            <label className="block text-xs font-bold text-slate-800 mb-1">
-              শিরোনাম / Title *
-            </label>
-            <input
-              type="text"
-              required
-              placeholder="যেমন: সূরা আল-বাকারাহ তাফসীর ক্লাস, ঢাকা বিশ্ববিদ্যালয় যুব সম্মেলন..."
-              value={title}
-              onChange={(e) => setTitle(e.target.value)}
-              className="w-full px-3.5 py-2.5 text-xs bg-slate-50 border border-slate-200 rounded-xl focus:bg-white focus:outline-hidden focus:ring-2 focus:ring-emerald-600 text-slate-900 font-medium placeholder:text-slate-400"
-            />
-          </div>
-
-          {/* Date & Times */}
-          <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+          {/* ========================================================
+              SECTION 2: TITLE & TOPIC BENTO BLOCK
+             ======================================================== */}
+          <div className="bg-white rounded-[24px] p-4.5 border border-[#E8E2D8] shadow-2xs space-y-3">
             <div>
-              <label className="block text-xs font-bold text-slate-800 mb-1 flex items-center gap-1">
-                <CalIcon size={13} className="text-emerald-700" /> তারিখ / Date *
-              </label>
+              <div className="flex items-center justify-between mb-1.5">
+                <label className="text-xs font-bold text-[#16221E] font-heading flex items-center gap-1.5">
+                  <span className="w-2 h-2 rounded-full bg-[#E28743]" />
+                  কর্মসূচির মূল শিরোনাম *
+                </label>
+                <span className="text-[11px] text-[#8C9893]">ক্লাস, লেকচার বা সেশনের নাম</span>
+              </div>
               <input
-                type="date"
+                type="text"
                 required
-                value={date}
-                onChange={(e) => setDate(e.target.value)}
-                className="w-full px-3 py-2 text-xs bg-slate-50 border border-slate-200 rounded-xl focus:bg-white focus:outline-hidden focus:ring-2 focus:ring-emerald-600 text-slate-900 font-medium"
+                placeholder="যেমন: সূরা আল-বাক্বারাহ তাফসির ক্লাস, জাতীয় যুব সম্মেলন..."
+                value={title}
+                onChange={(e) => setTitle(e.target.value)}
+                className="w-full px-4 py-2.5 text-xs sm:text-sm bg-[#FAF8F5] border border-[#E6E0D6] rounded-xl focus:bg-white focus:border-[#1E7E56] focus:outline-none focus:ring-2 focus:ring-[#1E7E56]/15 text-[#16221E] font-medium placeholder:text-[#9AA6A0] transition"
               />
             </div>
-            <div>
-              <label className="block text-xs font-bold text-slate-800 mb-1 flex items-center gap-1">
-                <Clock size={13} className="text-emerald-700" /> শুরু / Start Time
-              </label>
-              <input
-                type="time"
-                value={startTime}
-                onChange={(e) => setStartTime(e.target.value)}
-                className="w-full px-3 py-2 text-xs bg-slate-50 border border-slate-200 rounded-xl focus:bg-white focus:outline-hidden focus:ring-2 focus:ring-emerald-600 text-slate-900 font-medium"
-              />
-            </div>
-            <div>
-              <label className="block text-xs font-bold text-slate-800 mb-1 flex items-center gap-1">
-                <Clock size={13} className="text-emerald-700" /> সমাপ্তি / End Time
-              </label>
-              <input
-                type="time"
-                value={endTime}
-                onChange={(e) => setEndTime(e.target.value)}
-                className="w-full px-3 py-2 text-xs bg-slate-50 border border-slate-200 rounded-xl focus:bg-white focus:outline-hidden focus:ring-2 focus:ring-emerald-600 text-slate-900 font-medium"
-              />
-            </div>
-          </div>
 
-          {/* Location & Topic */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-            <div>
-              <label className="block text-xs font-bold text-slate-800 mb-1 flex items-center gap-1">
-                <MapPin size={13} className="text-emerald-700" /> ভেন্যু / Location
-              </label>
-              <input
-                type="text"
-                placeholder="যেমন: সোবহানবাগ জামে মসজিদ / জুম অনলাইন"
-                value={location}
-                onChange={(e) => setLocation(e.target.value)}
-                className="w-full px-3 py-2 text-xs bg-slate-50 border border-slate-200 rounded-xl focus:bg-white focus:outline-hidden focus:ring-2 focus:ring-emerald-600 text-slate-900 font-medium placeholder:text-slate-400"
-              />
+            {/* Quick Title Autofill Chips */}
+            <div className="flex flex-wrap gap-1.5 pt-0.5">
+              <span className="text-[10px] text-[#8C9893] font-bold self-center mr-1">সাজেশন:</span>
+              {titleSuggestions.map((sug, idx) => (
+                <button
+                  key={idx}
+                  type="button"
+                  onClick={() => setTitle(sug)}
+                  className="px-2.5 py-1 text-[11px] font-bold bg-[#FAF8F5] hover:bg-[#F0FDF4] hover:text-[#1E7E56] border border-[#E6E0D6] hover:border-[#A7F3D0] rounded-lg text-[#586661] transition cursor-pointer active:scale-95"
+                >
+                  + {sug}
+                </button>
+              ))}
             </div>
-            <div>
-              <label className="block text-xs font-bold text-slate-800 mb-1">
-                টপিক বা বিষয়বস্তু / Topic
+
+            {/* Topic Input */}
+            <div className="pt-1">
+              <label className="text-xs font-bold text-[#16221E] font-heading block mb-1.5">
+                নির্ধারিত বিষয়বস্তু বা আলোচনার টপিক
               </label>
               <input
                 type="text"
-                placeholder="যেমন: তাকওয়ার তাৎপর্য ও আধুনিক বাস্তবতা"
+                placeholder="যেমন: তাকওয়ার তাৎপর্য ও আধুনিক বাস্তবতা, আয়াত নং ৩৫–৪০..."
                 value={topic}
                 onChange={(e) => setTopic(e.target.value)}
-                className="w-full px-3 py-2 text-xs bg-slate-50 border border-slate-200 rounded-xl focus:bg-white focus:outline-hidden focus:ring-2 focus:ring-emerald-600 text-slate-900 font-medium placeholder:text-slate-400"
+                className="w-full px-4 py-2.5 text-xs bg-[#FAF8F5] border border-[#E6E0D6] rounded-xl focus:bg-white focus:border-[#1E7E56] focus:outline-none focus:ring-1 focus:ring-[#1E7E56] text-[#16221E] font-medium placeholder:text-[#9AA6A0] transition"
               />
             </div>
           </div>
 
-          {/* Priority & Privacy */}
-          <div className="flex flex-wrap items-center justify-between gap-4 pt-1 bg-slate-50/80 p-3 rounded-xl border border-slate-200">
-            <div className="flex items-center space-x-2">
-              <label className="text-xs font-bold text-slate-800">অগ্রাধিকার / Priority:</label>
-              <select
-                value={priority}
-                onChange={(e: any) => setPriority(e.target.value)}
-                className="text-xs bg-white border border-slate-300 rounded-lg px-2.5 py-1.5 font-semibold text-slate-800 focus:outline-hidden focus:ring-2 focus:ring-emerald-600 cursor-pointer"
-              >
-                <option value="LOW">Low (সাধারণ)</option>
-                <option value="MEDIUM">Medium (মাঝারি)</option>
-                <option value="HIGH">High (জরুরি)</option>
-                <option value="URGENT">Urgent (অতি জরুরি)</option>
-              </select>
+          {/* ========================================================
+              SECTION 3: DATE & TIME CAPSULE BENTO BLOCK
+             ======================================================== */}
+          <div className="bg-white rounded-[24px] p-4.5 border border-[#E8E2D8] shadow-2xs space-y-3.5">
+            <div className="flex items-center justify-between">
+              <span className="text-xs font-bold text-[#16221E] font-heading flex items-center gap-1.5">
+                <CalIcon size={14} className="text-[#1E7E56]" />
+                তারিখ ও সময়সূচি
+              </span>
+              {durationStr && (
+                <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full bg-[#EBF7F2] text-[#1E7E56] text-[11px] font-bold border border-[#D1EBE1]">
+                  <Clock size={11} /> {durationStr}
+                </span>
+              )}
             </div>
 
-            {isOwner && (
-              <label className="flex items-center space-x-2 cursor-pointer select-none">
+            {/* Date Row with Quick Presets */}
+            <div className="space-y-2">
+              <div className="flex items-center gap-2">
                 <input
-                  type="checkbox"
-                  checked={isPrivate}
-                  onChange={(e) => setIsPrivate(e.target.checked)}
-                  className="rounded text-emerald-600 w-4 h-4 cursor-pointer"
+                  type="date"
+                  required
+                  value={date}
+                  onChange={(e) => setDate(e.target.value)}
+                  className="flex-1 px-3.5 py-2 text-xs bg-[#FAF8F5] border border-[#E6E0D6] rounded-xl focus:bg-white focus:border-[#1E7E56] focus:outline-none text-[#16221E] font-bold"
                 />
-                <span className="text-xs font-bold text-slate-800 flex items-center gap-1">
-                  <Shield size={13} className="text-emerald-700" /> Scholar Confidential (গোপনীয়)
+                <span className="text-xs font-bold text-[#586661] bg-[#F4EFEB] px-3 py-2 rounded-xl border border-[#E4DDD3] shrink-0">
+                  {formatBanglaDate(date)}
                 </span>
+              </div>
+
+              {/* Quick Date Chips */}
+              <div className="flex items-center gap-1.5">
+                <button
+                  type="button"
+                  onClick={() => setQuickDate(0)}
+                  className="px-2.5 py-1 text-[11px] font-bold bg-[#FAF8F5] hover:bg-white border border-[#E6E0D6] rounded-lg text-[#586661] hover:text-[#16221E] transition cursor-pointer"
+                >
+                  আজ
+                </button>
+                <button
+                  type="button"
+                  onClick={() => setQuickDate(1)}
+                  className="px-2.5 py-1 text-[11px] font-bold bg-[#FAF8F5] hover:bg-white border border-[#E6E0D6] rounded-lg text-[#586661] hover:text-[#16221E] transition cursor-pointer"
+                >
+                  আগামীকাল
+                </button>
+                <button
+                  type="button"
+                  onClick={setNextFriday}
+                  className="px-2.5 py-1 text-[11px] font-bold bg-[#FAF8F5] hover:bg-white border border-[#E6E0D6] rounded-lg text-[#1E7E56] hover:bg-[#F0FDF4] transition cursor-pointer"
+                >
+                  পরবর্তী জুমু'আ
+                </button>
+              </div>
+            </div>
+
+            {/* Time Slot Row */}
+            <div className="grid grid-cols-2 gap-3 pt-1 border-t border-[#F2EEE7]">
+              <div>
+                <label className="text-[11px] font-bold text-[#586661] block mb-1 flex items-center gap-1">
+                  <Clock size={11} className="text-[#E28743]" />
+                  <span>শুরুর সময়</span>
+                </label>
+                <input
+                  type="time"
+                  value={startTime}
+                  onChange={(e) => setStartTime(e.target.value)}
+                  className="w-full px-3.5 py-2 text-xs bg-[#FAF8F5] border border-[#E6E0D6] rounded-xl focus:bg-white focus:border-[#1E7E56] focus:outline-none text-[#16221E] font-bold"
+                />
+              </div>
+              <div>
+                <label className="text-[11px] font-bold text-[#586661] block mb-1 flex items-center gap-1">
+                  <Clock size={11} className="text-[#1E7E56]" />
+                  <span>সমাপ্তির সময়</span>
+                </label>
+                <input
+                  type="time"
+                  value={endTime}
+                  onChange={(e) => setEndTime(e.target.value)}
+                  className="w-full px-3.5 py-2 text-xs bg-[#FAF8F5] border border-[#E6E0D6] rounded-xl focus:bg-white focus:border-[#1E7E56] focus:outline-none text-[#16221E] font-bold"
+                />
+              </div>
+            </div>
+          </div>
+
+          {/* ========================================================
+              SECTION 4: VENUE & LOCATION BENTO BLOCK
+             ======================================================== */}
+          <div className="bg-white rounded-[24px] p-4.5 border border-[#E8E2D8] shadow-2xs space-y-2.5">
+            <div className="flex items-center justify-between">
+              <label className="text-xs font-bold text-[#16221E] font-heading flex items-center gap-1.5">
+                <MapPin size={14} className="text-[#1E7E56]" />
+                ভেন্যু বা অনুষ্ঠানের স্থান
               </label>
+              <span className="text-[11px] text-[#8C9893]">অনলাইন বা অফলাইন ঠিকানা</span>
+            </div>
+            <input
+              type="text"
+              placeholder="যেমন: সোবহানবাগ জামে মসজিদ / ধানমন্ডি ক্যাম্পাস / জুম অনলাইন..."
+              value={location}
+              onChange={(e) => setLocation(e.target.value)}
+              className="w-full px-4 py-2.5 text-xs bg-[#FAF8F5] border border-[#E6E0D6] rounded-xl focus:bg-white focus:border-[#1E7E56] focus:outline-none text-[#16221E] font-medium placeholder:text-[#9AA6A0] transition"
+            />
+            {/* Quick Venue Chips */}
+            <div className="flex flex-wrap gap-1.5 pt-0.5">
+              {venueSuggestions.map((venue, idx) => (
+                <button
+                  key={idx}
+                  type="button"
+                  onClick={() => setLocation(venue)}
+                  className="px-2.5 py-1 text-[11px] font-bold bg-[#FAF8F5] hover:bg-white border border-[#E6E0D6] hover:border-[#1E7E56]/40 rounded-lg text-[#586661] hover:text-[#16221E] transition cursor-pointer active:scale-95"
+                >
+                  📍 {venue}
+                </button>
+              ))}
+            </div>
+          </div>
+
+          {/* ========================================================
+              SECTION 5: PRIORITY & PRIVACY BENTO BLOCK
+             ======================================================== */}
+          <div className="bg-white rounded-[24px] p-4.5 border border-[#E8E2D8] shadow-2xs space-y-3.5">
+            {/* Priority Selector as Segmented Pills */}
+            <div>
+              <label className="text-xs font-bold text-[#16221E] font-heading block mb-2">
+                কর্মসূচির অগ্রাধিকার নির্ধারণ
+              </label>
+              <div className="grid grid-cols-4 gap-1.5 bg-[#FAF8F5] p-1 rounded-2xl border border-[#E6E0D6]">
+                {[
+                  { key: 'LOW', label: 'সাধারণ', color: 'hover:text-[#586661]' },
+                  { key: 'MEDIUM', label: 'মাঝারি', color: 'hover:text-[#0284C7]' },
+                  { key: 'HIGH', label: 'উচ্চ গুরুত্ব', color: 'hover:text-[#D97706]' },
+                  { key: 'URGENT', label: 'অতি জরুরি', color: 'hover:text-[#DC2626]' },
+                ].map((item) => {
+                  const isSelected = priority === item.key;
+                  return (
+                    <button
+                      key={item.key}
+                      type="button"
+                      onClick={() => setPriority(item.key as any)}
+                      className={`py-2 text-center text-xs font-bold rounded-xl transition-all cursor-pointer ${
+                        isSelected
+                          ? 'bg-[#3E5514] text-white shadow-xs'
+                          : 'text-[#586661] hover:bg-white'
+                      }`}
+                    >
+                      {item.label}
+                    </button>
+                  );
+                })}
+              </div>
+            </div>
+
+            {/* Scholar Confidential Toggle */}
+            {isOwner && (
+              <div className="flex items-center justify-between p-3 bg-[#FAF8F5] rounded-2xl border border-[#E6E0D6]">
+                <div className="flex items-center gap-2.5">
+                  <div className="w-8 h-8 rounded-xl bg-[#F2F6EC] text-[#3E5514] flex items-center justify-center shrink-0 border border-[#D2DEC1]">
+                    <Shield size={16} />
+                  </div>
+                  <div>
+                    <div className="text-xs font-black text-[#16221E]">স্কলার কনফিডেনশিয়াল শিডিউল</div>
+                    <div className="text-[10px] text-[#586661]">শুধুমাত্র শায়খের নিজস্ব অ্যাপ ভিউতে দৃশ্যমান থাকবে</div>
+                  </div>
+                </div>
+                <button
+                  type="button"
+                  onClick={() => setIsPrivate(!isPrivate)}
+                  className={`w-11 h-6 rounded-full transition-colors relative cursor-pointer ${
+                    isPrivate ? 'bg-[#3E5514]' : 'bg-[#D1C9BE]'
+                  }`}
+                >
+                  <div
+                    className={`w-4 h-4 rounded-full bg-white transition-transform absolute top-1 ${
+                      isPrivate ? 'right-1' : 'left-1'
+                    }`}
+                  />
+                </button>
+              </div>
             )}
           </div>
 
-          {/* Notes */}
-          <div>
-            <label className="block text-xs font-bold text-slate-800 mb-1">
-              নোটস ও নির্দেশনা / Notes & Reminders
+          {/* ========================================================
+              SECTION 6: NOTES & REMINDERS BENTO BLOCK
+             ======================================================== */}
+          <div className="bg-white rounded-[24px] p-4.5 border border-[#E8E2D8] shadow-2xs space-y-1.5">
+            <label className="text-xs font-bold text-[#16221E] font-heading block">
+              নোটস, বিশেষ প্রস্তুতি ও আয়োজক বিবরণ
             </label>
             <textarea
               rows={2}
-              placeholder="গুরুত্বপূর্ণ পয়েন্ট, আয়োজকদের যোগাযোগ নম্বর বা খুতবাহর বিশেষ রেফারেন্স..."
+              placeholder="আয়োজকদের যোগাযোগ নম্বর, আলোচনা বা খুতবাহর বিশেষ রেফারেন্স..."
               value={notes}
               onChange={(e) => setNotes(e.target.value)}
-              className="w-full px-3 py-2 text-xs bg-slate-50 border border-slate-200 rounded-xl focus:bg-white focus:outline-hidden focus:ring-2 focus:ring-emerald-600 text-slate-900 font-medium placeholder:text-slate-400"
+              className="w-full px-4 py-2.5 text-xs bg-[#FAF8F5] border border-[#E6E0D6] rounded-xl focus:bg-white focus:border-[#3E5514] focus:outline-none text-[#16221E] font-medium placeholder:text-[#9AA6A0] transition"
             />
           </div>
 
-          {/* Actions */}
-          <div className="flex items-center justify-end space-x-3 pt-3 border-t border-slate-100">
+          {/* ========================================================
+              SECTION 7: TACTILE ACTIONS FOOTER
+             ======================================================== */}
+          <div className="flex items-center justify-end gap-3 pt-3 pb-1 border-t border-[#EFECE6]">
             <button
               type="button"
               onClick={onClose}
-              className="px-4 py-2 text-xs font-bold text-slate-700 bg-slate-100 hover:bg-slate-200 border border-slate-200 rounded-xl transition cursor-pointer"
+              className="px-5 py-2.5 text-xs font-bold text-[#586661] hover:text-[#16221E] bg-[#F4EFEB] hover:bg-[#ECE5DC] border border-[#E6E0D6] rounded-full transition cursor-pointer active:scale-95"
             >
-              বাতিল / Cancel
+              বাতিল করুন
             </button>
             <button
               type="submit"
               disabled={isSubmitting}
-              className="px-5 py-2 text-xs font-bold text-white bg-emerald-800 hover:bg-emerald-900 rounded-xl shadow-md transition cursor-pointer disabled:opacity-50 flex items-center gap-1.5"
+              className="px-7 py-2.5 text-xs font-bold text-white bg-[#3E5514] hover:bg-[#4D6819] rounded-full shadow-sm transition cursor-pointer disabled:opacity-50 flex items-center gap-2 active:scale-95"
             >
-              <Sparkles size={14} />
-              <span>{isSubmitting ? 'সংরক্ষণ হচ্ছে...' : 'সংরক্ষণ করুন / Save'}</span>
+              <Sparkles size={14} className="text-[#6E3A0D]" />
+              <span>{isSubmitting ? 'সংরক্ষণ হচ্ছে...' : 'শিডিউলে সংরক্ষণ করুন'}</span>
             </button>
           </div>
         </form>

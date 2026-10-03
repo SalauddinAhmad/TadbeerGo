@@ -65,18 +65,24 @@ export const EventDetailsSheet: React.FC<EventDetailsSheetProps> = ({
   };
 
   return (
-    <div className="fixed inset-0 z-50 bg-black/40 backdrop-blur-xs flex items-end sm:items-center justify-center p-0 sm:p-4 animate-in fade-in duration-150 font-bengali">
+    <div
+      onClick={onClose}
+      className="fixed inset-0 z-50 bg-black/40 backdrop-blur-xs flex items-end sm:items-center justify-center p-0 sm:p-4 animate-in fade-in duration-200 font-bengali"
+    >
       <div
-        className="w-full sm:max-w-md bg-white rounded-t-[28px] sm:rounded-3xl p-5 shadow-2xl border border-[#E4EBE8] max-h-[90vh] flex flex-col animate-in slide-in-from-bottom-6 duration-200"
+        className="w-full sm:max-w-md bg-[#FCFAF6] rounded-t-[32px] sm:rounded-[32px] p-6 sm:p-7 shadow-[0_25px_60px_-15px_rgba(62,85,20,0.2)] border border-[#E6E0D6] max-h-[92vh] flex flex-col animate-in slide-in-from-bottom-6 duration-200"
         onClick={(e) => e.stopPropagation()}
       >
+        {/* Grab Handle */}
+        <div className="sm:hidden w-10 h-1.5 rounded-full bg-[#E0D8CA] mx-auto mt-0 mb-3" />
+
         {/* Header */}
-        <div className="flex items-center justify-between pb-3 border-b border-[#E4EBE8]">
+        <div className="flex items-center justify-between pb-4 border-b border-[#EFECE6] bg-white -mx-6 -mt-6 sm:-mx-7 sm:-mt-7 p-6 sm:p-7 rounded-t-[32px]">
           <div className="flex items-center gap-2">
-            <span className="text-[10px] font-bold uppercase tracking-wider px-2.5 py-0.5 rounded-full bg-[#E8F5F0] text-[#063F35]">
+            <span className="text-[11px] font-bold uppercase tracking-wider px-3 py-1 rounded-full bg-[#F2F6EC] border border-[#D2DEC1] text-[#3E5514]">
               {eventData?.category || eventData?.type || 'কর্মসূচি'}
             </span>
-            <span className="text-[10px] font-bold px-2.5 py-0.5 rounded-full bg-emerald-50 text-[#00A878]">
+            <span className="text-[11px] font-bold px-3 py-1 rounded-full bg-[#F2F6EC] border border-[#D2DEC1] text-[#3E5514]">
               {eventData?.status || 'নিশ্চিত'}
             </span>
           </div>
@@ -87,7 +93,7 @@ export const EventDetailsSheet: React.FC<EventDetailsSheetProps> = ({
                   onClose();
                   onEdit(eventData);
                 }}
-                className="w-8 h-8 rounded-full bg-[#F7F9F7] hover:bg-[#E8F5F0] flex items-center justify-center text-[#063F35] transition cursor-pointer"
+                className="w-9 h-9 rounded-full bg-white border border-[#E6E0D6] hover:bg-[#F2F6EC] flex items-center justify-center text-[#3E5514] transition shadow-2xs cursor-pointer active:scale-95"
                 title="সম্পাদনা করুন"
               >
                 <Edit3 size={15} />
@@ -99,7 +105,7 @@ export const EventDetailsSheet: React.FC<EventDetailsSheetProps> = ({
                   onClose();
                   onDelete(eventData);
                 }}
-                className="w-8 h-8 rounded-full bg-[#F7F9F7] hover:bg-rose-50 flex items-center justify-center text-rose-600 transition cursor-pointer"
+                className="w-9 h-9 rounded-full bg-white border border-[#E6E0D6] hover:bg-rose-50 flex items-center justify-center text-rose-600 transition shadow-2xs cursor-pointer active:scale-95"
                 title="মুছে ফেলুন বা বাতিল করুন"
               >
                 <Trash2 size={15} />
@@ -107,7 +113,7 @@ export const EventDetailsSheet: React.FC<EventDetailsSheetProps> = ({
             )}
             <button
               onClick={onClose}
-              className="w-8 h-8 rounded-full bg-slate-100 hover:bg-slate-200 flex items-center justify-center text-[#6F7D78] transition cursor-pointer"
+              className="w-9 h-9 rounded-full bg-white border border-[#E6E0D6] hover:bg-[#F4EFEB] flex items-center justify-center text-[#586661] hover:text-[#16221E] transition shadow-2xs cursor-pointer active:scale-95"
             >
               <X size={16} />
             </button>
@@ -115,29 +121,29 @@ export const EventDetailsSheet: React.FC<EventDetailsSheetProps> = ({
         </div>
 
         {/* Content Body */}
-        <div className="overflow-y-auto space-y-4 py-3 flex-1 pr-0.5">
+        <div className="overflow-y-auto space-y-4 pt-5 pb-2 flex-1 pr-0.5">
           {/* Main Title & Time */}
           <div>
-            <h2 className="text-xl font-bold font-heading text-[#17211F] leading-tight">
+            <h2 className="text-xl font-black font-heading text-[#16221E] leading-tight tracking-tight">
               {title}
             </h2>
-            <p className="text-xs text-[#6F7D78] mt-0.5 font-medium">
+            <p className="text-xs text-[#586661] mt-1 font-medium">
               {subtitle}
             </p>
           </div>
 
           {/* Time & Venue Card */}
-          <div className="bg-[#F7F9F7] rounded-2xl p-3.5 border border-[#E4EBE8] space-y-2">
-            <div className="flex items-center gap-2 text-xs text-[#17211F] font-semibold">
-              <Clock size={15} className="text-[#00A878]" />
+          <div className="bg-white rounded-2xl p-4 border border-[#E6E0D6] shadow-2xs space-y-2.5">
+            <div className="flex items-center gap-2 text-xs text-[#16221E] font-bold">
+              <Clock size={15} className="text-[#E28743]" />
               <span>{time}</span>
               <span className="text-[#9AA6A2] font-normal">• {formattedDate}</span>
             </div>
-            <div className="flex items-center gap-2 text-xs text-[#6F7D78]">
+            <div className="flex items-center gap-2 text-xs text-[#586661] font-medium">
               {isOnline ? (
-                <Monitor size={15} className="text-[#00A878]" />
+                <Monitor size={15} className="text-[#1E7E56]" />
               ) : (
-                <MapPin size={15} className="text-[#00A878]" />
+                <MapPin size={15} className="text-[#1E7E56]" />
               )}
               <span>{location}</span>
             </div>
@@ -146,11 +152,11 @@ export const EventDetailsSheet: React.FC<EventDetailsSheetProps> = ({
           {/* Preparation Checklist */}
           <div className="space-y-2">
             <div className="flex items-center justify-between">
-              <h4 className="text-xs font-bold font-heading text-[#17211F]">
+              <h4 className="text-xs font-bold font-heading text-[#16221E]">
                 প্রস্তুতির কাজ
               </h4>
-              <span className="text-[11px] text-[#00A878] font-medium">
-                সংরক্ষিত
+              <span className="text-[11px] font-bold text-[#1E7E56]">
+                {prepTasks.filter(t => t.done).length}/{prepTasks.length} সম্পন্ন
               </span>
             </div>
             <div className="space-y-1.5">
@@ -158,10 +164,10 @@ export const EventDetailsSheet: React.FC<EventDetailsSheetProps> = ({
                 <div
                   key={task.id}
                   onClick={() => toggleTask(task.id)}
-                  className="flex items-start gap-2 text-xs text-[#17211F] bg-[#F7F9F7] hover:bg-[#E8F5F0] p-2.5 rounded-xl border border-[#E4EBE8] transition cursor-pointer"
+                  className="flex items-start gap-2.5 text-xs text-[#16221E] bg-white hover:bg-emerald-50/20 p-3 rounded-xl border border-[#E6E0D6] shadow-2xs transition cursor-pointer active:scale-98"
                 >
                   {task.done ? (
-                    <CheckSquare size={16} className="text-[#00A878] shrink-0 mt-0.5" />
+                    <CheckSquare size={16} className="text-[#1E7E56] shrink-0 mt-0.5" />
                   ) : (
                     <Square size={16} className="text-[#9AA6A2] shrink-0 mt-0.5" />
                   )}
@@ -175,19 +181,19 @@ export const EventDetailsSheet: React.FC<EventDetailsSheetProps> = ({
 
           {/* Reminders List */}
           <div className="space-y-1.5 pt-1">
-            <h4 className="text-xs font-bold font-heading text-[#17211F]">
+            <h4 className="text-xs font-bold font-heading text-[#16221E]">
               সক্রিয় রিমাইন্ডার
             </h4>
             <div className="flex items-center gap-2 flex-wrap text-xs">
-              <span className="px-2.5 py-1 rounded-full bg-[#E8F5F0] text-[#063F35] font-semibold text-[11px] flex items-center gap-1">
-                <Bell size={11} className="text-[#00A878]" />
+              <span className="px-3 py-1 rounded-full bg-[#F2F6EC] border border-[#D2DEC1] text-[#3E5514] font-bold text-[11px] flex items-center gap-1.5">
+                <Bell size={11} className="text-[#3E5514]" />
                 <span>১ দিন পূর্বে</span>
               </span>
-              <span className="px-2.5 py-1 rounded-full bg-[#E8F5F0] text-[#063F35] font-semibold text-[11px] flex items-center gap-1">
-                <Bell size={11} className="text-[#00A878]" />
+              <span className="px-3 py-1 rounded-full bg-[#F2F6EC] border border-[#D2DEC1] text-[#3E5514] font-bold text-[11px] flex items-center gap-1.5">
+                <Bell size={11} className="text-[#3E5514]" />
                 <span>১ ঘণ্টা পূর্বে</span>
               </span>
-              <span className="px-2.5 py-1 rounded-full bg-slate-100 text-[#6F7D78] font-semibold text-[11px] flex items-center gap-1">
+              <span className="px-3 py-1 rounded-full bg-white border border-[#E6E0D6] text-[#586661] font-bold text-[11px] flex items-center gap-1.5 shadow-2xs">
                 <span>১৫মি পূর্বে</span>
               </span>
             </div>
@@ -195,20 +201,20 @@ export const EventDetailsSheet: React.FC<EventDetailsSheetProps> = ({
         </div>
 
         {/* Footer Actions */}
-        <div className="pt-3 border-t border-[#E4EBE8] flex items-center gap-2">
+        <div className="pt-3 border-t border-[#EFECE6] flex items-center gap-2.5">
           <button
             onClick={handleAction}
-            className="flex-1 py-2.5 rounded-xl bg-[#063F35] hover:bg-[#042F28] active:scale-[0.99] text-white text-xs font-bold shadow-xs transition flex items-center justify-center gap-2 cursor-pointer"
+            className="flex-1 py-3 rounded-full bg-[#3E5514] hover:bg-[#4D6819] active:scale-[0.99] text-white text-xs font-bold shadow-sm transition flex items-center justify-center gap-2 cursor-pointer"
           >
             {isOnline ? (
               <>
-                <Monitor size={14} className="text-[#00A878]" />
+                <Monitor size={14} className="text-[#F2F6EC]" />
                 <span>অনলাইন সেশনে যুক্ত হোন</span>
                 <ExternalLink size={12} />
               </>
             ) : (
               <>
-                <Navigation size={14} className="text-[#00A878]" />
+                <Navigation size={14} className="text-[#F2F6EC]" />
                 <span>গুগল ম্যাপসে লোকেশন দেখুন</span>
                 <ExternalLink size={12} />
               </>
@@ -218,7 +224,7 @@ export const EventDetailsSheet: React.FC<EventDetailsSheetProps> = ({
           {eventData?.phone && (
             <a
               href={`tel:${eventData.phone}`}
-              className="w-10 h-10 rounded-xl border border-[#E4EBE8] hover:bg-[#E8F5F0] flex items-center justify-center text-[#063F35] transition cursor-pointer shrink-0"
+              className="w-11 h-11 rounded-full bg-white border border-[#E6E0D6] hover:bg-[#F2F6EC] flex items-center justify-center text-[#3E5514] transition cursor-pointer shrink-0 shadow-2xs active:scale-95"
               title="সরাসরি কল করুন"
             >
               <Phone size={15} />
@@ -231,7 +237,7 @@ export const EventDetailsSheet: React.FC<EventDetailsSheetProps> = ({
                 navigator.share({ title, text: `${title} - ${time} (${location})` }).catch(() => {});
               }
             }}
-            className="w-10 h-10 rounded-xl border border-[#E4EBE8] hover:bg-slate-50 flex items-center justify-center text-[#6F7D78] transition cursor-pointer shrink-0"
+            className="w-11 h-11 rounded-full bg-white border border-[#E6E0D6] hover:bg-[#F4EFEB] flex items-center justify-center text-[#586661] transition cursor-pointer shrink-0 shadow-2xs active:scale-95"
             title="শেয়ার করুন"
           >
             <Share2 size={16} />
